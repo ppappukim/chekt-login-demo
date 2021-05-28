@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    
+
     <!-- 1. reset password expired page -->
     <ResetPasswordExpired v-if="isExpired" @resetchild="resetparents"/>
 
@@ -12,7 +12,7 @@
       </div>
       <div v-on:click="clickToDashboard()" class="go-dashboard-btn" v-bind:class="{loading:isLoading}">
         <div v-if="isLoading" class="loader"></div>
-        <div v-else>Countinue</div>
+        <div v-else>Continue to dashboard</div>
       </div>
     </div>
 
@@ -136,47 +136,12 @@ export default {
   },
   watch: {
     password: function () {
-
-      // 1글자 이상입력시 눈아이콘 보여주기
-      if (this.password.length > 0) this.showEye = true
-      else this.showEye = false
-
-      // 비밀번호 준비
-      var passwordRule =  /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/ // 강력하지 않은 비밀번호.
-      var passwordRuleStrong =  /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,20}$/ // 10자리 이상, 특수문자 포함시 강력한 비밀번호.
-
-      // 성공! - 강력하지 않은 비밀번호
-      if (passwordRule.test(this.password)) {
-        this.passwordError = false
-        this.passwordSuccess = true
-        this.passwordSuccessrMsg = 'Nice work. Your password is good.'
-        this.passwordHint = false
-      }
-      else {
-        this.passwordSuccess = false
-        this.passwordHint = true
-      }
-
-      // 성공! - 강력한 비밀번호
-      if (passwordRuleStrong.test(this.password)) {
-        this.passwordSuccess = true
-        this.passwordSuccessrMsg = 'Nice work. This is an excellent password.'
-      }
+      this.passwordSecureCheck()
+      this.passwordConfirmSecureCheck()
     },
     passwordConfirm: function () {
-      
-      // 1글자 이상입력시 눈아이콘 보여주기
-      if (this.passwordConfirm.length > 0) this.showEyeConfirm = true
-      else this.showEyeConfirm = false
-
-      // new password와 매치여부 체크
-      if (this.password !== this.passwordConfirm && this.passwordConfirm.length > 0) {
-        this.passwordNotMatch = true
-        this.passwordConfirmErrorMsg = 'This password doesn’t match. Try again.'
-      }
-      else this.passwordNotMatch = false
-
-
+      this.passwordSecureCheck()
+      this.passwordConfirmSecureCheck()
     }
   },
   mounted: function () {
@@ -223,10 +188,14 @@ export default {
       // 클릭하면 비밀번호 보여주기
       switch (type) {
       case 'new':
+        this.passwordSecureCheck()
+        this.passwordConfirmSecureCheck()
         this.isInputFocused = true
         this.isConfirmInputFocused = false
         break
       case 'confirm':
+        this.passwordSecureCheck()
+        this.passwordConfirmSecureCheck()
         this.isConfirmInputFocused = true
         this.isInputFocused = false
         break
@@ -236,10 +205,14 @@ export default {
       // 클릭하면 비밀번호 보여주기
       switch (type) {
       case 'new':
+        this.passwordSecureCheck()
+        this.passwordConfirmSecureCheck()
         this.isInputFocused = false
         this.isConfirmInputFocused = false
         break
       case 'confirm':
+        this.passwordSecureCheck()
+        this.passwordConfirmSecureCheck()
         this.isConfirmInputFocused = false
         this.isInputFocused = false
         break
@@ -263,6 +236,45 @@ export default {
         else passwordConfirm.type = 'password'
         break
       }
+    },
+    passwordSecureCheck: function () {
+      // 1글자 이상입력시 눈아이콘 보여주기
+      if (this.password.length > 0) this.showEye = true
+      else this.showEye = false
+
+      // 비밀번호 준비
+      var passwordRule =  /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/ // 강력하지 않은 비밀번호.
+      var passwordRuleStrong =  /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,20}$/ // 10자리 이상, 특수문자 포함시 강력한 비밀번호.
+
+      // 성공! - 강력하지 않은 비밀번호
+      if (passwordRule.test(this.password)) {
+        this.passwordError = false
+        this.passwordSuccess = true
+        this.passwordSuccessrMsg = 'Nice work. Your password is good.'
+        this.passwordHint = false
+      }
+      else {
+        this.passwordSuccess = false
+        this.passwordHint = true
+      }
+
+      // 성공! - 강력한 비밀번호
+      if (passwordRuleStrong.test(this.password)) {
+        this.passwordSuccess = true
+        this.passwordSuccessrMsg = 'Nice work. This is an excellent password.'
+      }
+    },
+    passwordConfirmSecureCheck: function () {
+      // 1글자 이상입력시 눈아이콘 보여주기
+      if (this.passwordConfirm.length > 0) this.showEyeConfirm = true
+      else this.showEyeConfirm = false
+
+      // new password와 매치여부 체크
+      if (this.password !== this.passwordConfirm && this.passwordConfirm.length > 0) {
+        this.passwordNotMatch = true
+        this.passwordConfirmErrorMsg = 'This password doesn’t match. Try again.'
+      }
+      else this.passwordNotMatch = false
     },
     passwordCheck: function (password) {
       // 준비 - 숫자, 영문 뽑아내기

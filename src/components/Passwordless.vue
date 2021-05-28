@@ -105,7 +105,7 @@ export default {
     },
   },
   mounted: function () {
-    this.focusInput()
+    this.emailFocusInput()
   },
   watch: {
     code: function () {
@@ -129,12 +129,7 @@ export default {
       this.isLoading = false  
       if (this.email === 'test@chekt.com') {
         this.isSend = true
-        this.$nextTick(function() { 
-          // Dom이 랜더링 된 후에 아래 코드 실행!
-          var code = document.getElementById("passwordless-code")
-          this.codeInputActive = true
-          code.focus()
-        });
+        this.codeInputFocus()
       } 
       else this.isEmailSendFailed = true
     },
@@ -162,9 +157,19 @@ export default {
       await this.wait(2000)
       this.isEmailResending = false
       this.isCodeAuthFailed = false
+      this.isCodeInsertDone = false
       this.isSend = true
+      this.codeInputFocus()
     },
-    focusInput: function () {
+    codeInputFocus: function () {
+      this.$nextTick(function() { 
+        // Dom이 랜더링 된 후에 아래 코드 실행!
+        var code = document.getElementById("passwordless-code")
+        this.codeInputActive = true
+        code.focus()
+      });
+    },
+    emailFocusInput: function () {
       this.email = this.emailInputInfo
       var email = document.getElementById("forgotpassword-email")
       email.focus()
