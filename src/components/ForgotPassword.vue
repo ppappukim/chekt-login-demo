@@ -97,6 +97,7 @@ export default {
     focusSyncInput: function () {
       this.email = this.emailInputInfo
       var email = document.getElementById("forgotpassword-email")
+      if (email !== null)
       email.focus()
     },
     testResetPasswordsetting: function () {

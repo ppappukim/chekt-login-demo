@@ -335,6 +335,11 @@ input:focus {
 @media screen and (max-width: 600px) {
   .wrapper {
     width: 360px;
+    margin-top: 30px;
+  }
+  .header {
+    margin-bottom: 25px;
+    margin-left: 15px;
   }
   .avatar {
     display: none;

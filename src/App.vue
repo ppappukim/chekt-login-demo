@@ -17,6 +17,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
+
+input {
+  /* 모바일에서 input에 shadow생기는거 방지. */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none; 
+}
+
 :root {
   /* Color */
   --primary: #1E88E5;

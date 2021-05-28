@@ -166,12 +166,14 @@ export default {
         // Dom이 랜더링 된 후에 아래 코드 실행!
         var code = document.getElementById("passwordless-code")
         this.codeInputActive = true
+        if (code !== null)
         code.focus()
       });
     },
     emailFocusInput: function () {
       this.email = this.emailInputInfo
       var email = document.getElementById("forgotpassword-email")
+      if (email !== null)
       email.focus()
     },
     codeBlur: function () {
