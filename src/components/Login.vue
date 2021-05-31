@@ -16,20 +16,20 @@
           </div>
           <div class="email">Email</div>
           <div class="input" style="margin-bottom:30px;">
-            <input v-model="email" v-on:keyup.enter="clickLogin()" autofocus id="email" type="email" placeholder="yours@chekt.com">
+            <input v-model="email" v-on:keyup.enter="clickLogin(email, password)" autofocus id="email" type="email" placeholder="yours@chekt.com">
           </div>
           <div class="passwords">
             <div class="password">Password</div>
             <div v-on:click="clickForgotPassword()" class="forgot-password">Forgot your Password?</div>
           </div>
           <div class="input">
-            <input v-model="password" v-on:keyup.enter="clickLogin()" type="password" placeholder="your password" id="password">
+            <input v-model="password" v-on:keyup.enter="clickLogin(email, password)" type="password" placeholder="your password" id="password">
           </div>
           <div v-if="isLoginFailed" class="failed-text" style="margin-top:20px;">
             <MyIcon style="color:#CD3D64;" v-bind:icon="'error'" v-bind:width="18" />
-            <div style="margin-left:5px;">Incorrect email or password.</div>
+            <div style="margin-left:5px;">{{loginFailMessage}}</div>
           </div>
-          <div v-on:click="clickLogin()" v-bind:class="{loading:isLoading}" class="login-btn" style="margin-bottom:20px; margin-top:50px;">
+          <div v-on:click="clickLogin(email, password)" v-bind:class="{loading:isLoading}" class="login-btn" style="margin-bottom:20px; margin-top:50px;">
             <div v-if="isLoading" class="loader"></div>
             <div v-else>Log in</div>
           </div>
@@ -52,7 +52,7 @@
 <script>
 import MyIcon from '@/components/MyIcon'
 import ForgotPassword from '@/components/ForgotPassword'
-import ResetPassword from '@/components/ResetPassword'
+import ResetPassword from '@/components/ResetPasswordBackup'
 import Passwordless from '@/components/Passwordless'
 export default {
   components: {
@@ -66,6 +66,7 @@ export default {
     return {
       email: '',
       password: '',
+      loginFailMessage:'',
       isLoading: false,
       isEmailExist: false,
       isLoginFailed: false,
@@ -96,21 +97,58 @@ export default {
   created: function () {
   },
   methods: {
-    clickLogin: async function () {
-      var password = document.getElementById("password");
-      var email = document.getElementById("email");
-      password.blur()
-      email.blur()
-      password.disabled = true
-      email.disabled = true
+    clickLogin: async function (email, password) {
+      var passwordDom = document.getElementById("password");
+      var emailDom = document.getElementById("email");
+      passwordDom.blur()
+      emailDom.blur()
+      passwordDom.disabled = true
+      emailDom.disabled = true
       this.isLoginFailed = false
       this.isLoading = true
-      await this.wait(2000)
+      await this.wait(500) // Too fast
+      
+      ////////////////////
+      // LOGIN ACTION!!!!
+      try {
+        // CASE 1 - Sign IN successful
+        await this.$firebase.auth.signIn({email, password})
+        alert('login Success!!')
+      } catch (err) {
+        console.log(err);
+        switch (err.code) {
+          case 'auth/invalid-email':
+            this.isLoginFailed = true
+            this.loginFailMessage = err.message
+            break;
+          case 'auth/wrong-password':
+            this.isLoginFailed = true
+            this.loginFailMessage = err.message
+            break;
+          case 'auth/user-not-found':
+            this.isLoginFailed = true
+            this.loginFailMessage = err.message
+            break;
+          case 'auth/too-many-requests':
+            this.isLoginFailed = true
+            this.loginFailMessage = err.message
+            break;
+          case 'auth/argument-error':
+            this.isLoginFailed = true
+            this.loginFailMessage = err.message
+            break;
+          case 'auth/user-not-found':
+            this.isLoginFailed = true
+            this.loginFailMessage = err.message
+            break;
+          // default: this.showCheckModal = true
+        }
+      }
       this.isLoading = false
-      password.disabled = false
-      email.disabled = false
-      if (this.email === 'test@chekt.com' && this.password === 'test123') alert('login success!')
-      else this.isLoginFailed = true
+      passwordDom.disabled = false
+      emailDom.disabled = false
+      // if (this.email === 'test@chekt.com' && this.password === 'test123') alert('login success!')
+      // else this.isLoginFailed = true
     },
     clickForgotPassword: function () {
       this.isForgotPasswordMode = true

@@ -24,13 +24,13 @@
       </div>
       <div class="email">Email</div>
       <div class="input" style="margin-bottom:20px;">
-        <input v-model="email" v-on:keyup.enter="clickSend()" id="forgotpassword-email" type="email">
+        <input v-model="email" v-on:keyup.enter="clickSend(email)" id="forgotpassword-email" type="email">
       </div>
       <div v-if="isEmailSendFailed" class="failed-text" style="margin-top:20px;">
           <MyIcon v-bind:icon="'error'" v-bind:width="18" />
           <div style="margin-left:5px;">We couldn’t find that email. Please try again.</div>
         </div>
-      <div v-on:click="clickSend()" class="send-btn" v-bind:class="{loading:isLoading}">
+      <div v-on:click="clickSend(email)" class="send-btn" v-bind:class="{loading:isLoading}">
         <div v-if="isLoading" class="loader"></div>
         <div v-else>Send Email</div>
       </div>
@@ -71,17 +71,37 @@ export default {
     
   },
   methods: {
-    clickSend: async function () {
+    clickSend: async function (email) {
       this.isLoading = true
       this.isEmailSendFailed = false
-      var email = document.getElementById("forgotpassword-email")
-      email.blur()
-      email.disabled = true
-      await this.wait(2000)
-      email.disabled = false
+      var emailDom = document.getElementById("forgotpassword-email")
+      emailDom.blur()
+      emailDom.disabled = true
+      await this.wait(2000) // Too fast
+
+      ////////////////////
+      // RESET PASSWORD SEND ACTION!!!!
+      console.log(email);
+      try {
+        // CASE 1 - Sign IN successful
+        await this.$firebase.auth.sendPasswordResetEmail({email})
+        this.isSend = true
+      } catch (err) {
+        console.log(err);
+        switch (err.code) {
+          case 'auth/argument-error':
+            break;
+          case 'auth/user-not-found':
+            break;
+          case 'auth/user-not-found':
+            break;
+          // default: this.showCheckModal = true
+        }
+      }
+      emailDom.disabled = false
       this.isLoading = false
-      if (this.email === 'test@chekt.com') this.isSend = true
-      else this.isEmailSendFailed = true
+      // if (this.email === 'test@chekt.com') this.isSend = true
+      // else this.isEmailSendFailed = true
     },
     // emit 함수
     clickReturnToLogin: function () {

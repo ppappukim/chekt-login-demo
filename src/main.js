@@ -5,7 +5,13 @@ import App from './App'
 import router from './router'
 import store  from './store'
 
+// Plugins
+import FirebasePlugin from './plugins/firebase'
+
 Vue.config.productionTip = false
+
+// CUSTOM 
+Vue.use(FirebasePlugin)
 
 /* eslint-disable no-new */
 new Vue({

@@ -1,114 +1,102 @@
 <template>
-  <div class="wrapper">
-    <div class="header"><img src="../assets/chekt-logo.png" style="width:100px;height:100%;"></div>
-      <transition name="component-fade" mode="out-in">
-        <div class="body">
-          <!-- 1. reset password expired page -->
-          <ResetPasswordExpired v-if="isExpired" @resetchild="resetparents"/>
+  <div class="body">
 
-          <!-- 2. go to dashboard page -->
-          <div v-else-if="isResetPasswordSuccess" class="form">
-            <div>
-              <div class="title">You've successfully changed your password</div>
-              <div class="desc">Click the “Continue to dashboard” button to log in your site.</div>
-            </div>
-            <div v-on:click="clickToDashboard()" class="go-dashboard-btn" v-bind:class="{loading:isLoading}">
-              <div v-if="isLoading" class="loader"></div>
-              <div v-else>Continue to dashboard</div>
-            </div>
-          </div>
+    <!-- 1. reset password expired page -->
+    <ResetPasswordExpired v-if="isExpired" @resetchild="resetparents"/>
 
-          <!-- 3. reset password page -->
-          <div v-else class="form">
-            <div>
-              <div class="title">Reset your password</div>
-            </div>
-            <div class="password">New Password</div>
-            <div 
-            class="input" 
-            v-bind:class="{inputerror:passwordError, focused:isInputFocused, disabled:isPasswordDisabled}" 
-            style="margin-bottom:20px;" >
-              <input 
-              v-model="password" 
-              v-on:blur="blurChange()" 
-              v-on:focus="focusChange()" 
-              v-on:keyup.enter="clickContinue()" 
-              @focus="passowrdFocused('new')"
-              @blur="passowrdBlured('new')"
-              v-bind:class="{disabled:isPasswordDisabled}" 
-              id="resetpassword-password"
-              type="password"
-              autocomplete="new-password">
-              <div v-show="showEye" v-on:click="showHideEye('new', $event)" class="tooltip" id="show-hide-eye">
-                <MyIcon v-if="isEyeOff" class="password-eyes" v-bind:icon="'eye-off'"/>
-                <MyIcon v-else class="password-eyes" v-bind:icon="'eye'"/>
-                <span v-if="isEyeOff" class="tooltiptext">Hide password</span>
-                <span v-else class="tooltiptext">Show password</span>
-              </div>
-            </div>
-            <!-- /////메세지 -->
-            <transition name="msg-fade" mode="out-in">
-              <div v-if="passwordHint" class="hint-text" style="margin-top:-10px;">
-                <div style="margin-left:5px;">{{passwordMsg}}</div>
-              </div>
-              <div v-else-if="passwordError" class="failed-text" style="margin-top:-10px;">
-                <MyIcon v-bind:icon="'error'" v-bind:width="18" />
-                <div style="margin-left:5px;">{{passwordErrorMsg}}</div>
-              </div>
-              <div v-else-if="passwordSuccess" class="success-text" style="margin-top:-10px;">
-                <MyIcon v-bind:icon="'check'" v-bind:width="18" />
-                <div style="margin-left:5px;">{{passwordSuccessrMsg}}</div>
-              </div>
-            </transition>
-            <!-- 메세지///// -->
-            <div class="password">Confirm your password</div>
-            <div 
-            class="input" 
-            v-bind:class="{confirminputerror:passwordNotMatch, focused:isConfirmInputFocused, disabled:isPasswordDisabled}" 
-            style="margin-bottom:30px;">
-              <input
-              v-model="passwordConfirm"
-              v-on:keyup.enter="clickContinue()"
-              @focus="passowrdFocused('confirm')"
-              @blur="passowrdBlured('confirm')"
-              v-bind:class="{disabled:isPasswordDisabled}" 
-              id="resetpassword-password-confirm"
-              type="password"
-              autocomplete="new-password">
-              <div v-if="showEyeConfirm" v-on:click="showHideEye('confirm')" class="tooltip" id="show-hide-eye-confirm">
-                <MyIcon v-if="isEyeOffConfirm" class="password-eyes" v-bind:icon="'eye-off'"/>
-                <MyIcon v-else class="password-eyes" v-bind:icon="'eye'"/>
-                <span v-if="isEyeOffConfirm" class="tooltiptext">Hide password</span>
-                <span v-else class="tooltiptext">Show password</span>
-              </div>
-            </div>
-            <!-- /////메세지 -->
-            <transition name="msg-fade" mode="out-in">
-              <div v-if="passwordNotMatch" class="failed-text" style="margin-top:-20px;">
-                <MyIcon v-bind:icon="'error'" v-bind:width="18" />
-                <div style="margin-left:5px;">{{passwordConfirmErrorMsg}}</div>
-              </div>
-            </transition>
-            <!-- 메세지///// -->
-            <div v-on:click="clickContinue()" class="send-btn" v-bind:class="{loading:isLoading, success:passwordSuccess&&password===passwordConfirm}">
-              <div v-if="isLoading" class="loader"></div>
-              <div v-else>Countinue</div>
-            </div>
-            <!-- 테스트///// -->
-            <div v-on:click="test()" class="test">Test reset password expired</div>
-            <!-- /////테스트 -->
-          </div>
+    <!-- 2. go to dashboard page -->
+    <div v-else-if="isResetPasswordSuccess" class="form">
+      <div class="form-header">
+        <div class="title">You've successfully changed your password</div>
+        <div class="desc">Click the “Continue to dashboard” button to log in your site.</div>
+      </div>
+      <div v-on:click="clickToDashboard()" class="go-dashboard-btn" v-bind:class="{loading:isLoading}">
+        <div v-if="isLoading" class="loader"></div>
+        <div v-else>Continue to dashboard</div>
+      </div>
+    </div>
+
+    <!-- 3. reset password page -->
+    <div v-else class="form">
+      <div class="form-header">
+        <div class="title">Reset your password</div>
+      </div>
+      <div class="password">New Password</div>
+      <div 
+      class="input" 
+      v-bind:class="{inputerror:passwordError, focused:isInputFocused, disabled:isPasswordDisabled}" 
+      style="margin-bottom:20px;" >
+        <input 
+        v-model="password" 
+        v-on:blur="blurChange()" 
+        v-on:focus="focusChange()" 
+        v-on:keyup.enter="clickContinue()" 
+        @focus="passowrdFocused('new')"
+        @blur="passowrdBlured('new')"
+        v-bind:class="{disabled:isPasswordDisabled}" 
+        id="resetpassword-password"
+        type="password"
+        autocomplete="new-password">
+        <div v-show="showEye" v-on:click="showHideEye('new', $event)" class="tooltip" id="show-hide-eye">
+          <MyIcon v-if="isEyeOff" class="password-eyes" v-bind:icon="'eye-off'"/>
+          <MyIcon v-else class="password-eyes" v-bind:icon="'eye'"/>
+          <span v-if="isEyeOff" class="tooltiptext">Hide password</span>
+          <span v-else class="tooltiptext">Show password</span>
         </div>
-    </transition>
-    <div class="footer">
-      <span class="footer-item">© CHeKT</span>
-      <span> · </span> 
-      <span class="footer-item">Contact</span>
-      <span> · </span> 
-      <span class="footer-item">Privacy & terms</span>
+      </div>
+      <!-- /////메세지 -->
+      <transition name="msg-fade" mode="out-in">
+        <div v-if="passwordHint" class="hint-text" style="margin-top:-10px;">
+          <div style="margin-left:5px;">{{passwordMsg}}</div>
+        </div>
+        <div v-else-if="passwordError" class="failed-text" style="margin-top:-10px;">
+          <MyIcon v-bind:icon="'error'" v-bind:width="18" />
+          <div style="margin-left:5px;">{{passwordErrorMsg}}</div>
+        </div>
+        <div v-else-if="passwordSuccess" class="success-text" style="margin-top:-10px;">
+          <MyIcon v-bind:icon="'check'" v-bind:width="18" />
+          <div style="margin-left:5px;">{{passwordSuccessrMsg}}</div>
+        </div>
+      </transition>
+      <!-- 메세지///// -->
+      <div class="password">Confirm your password</div>
+      <div 
+      class="input" 
+      v-bind:class="{confirminputerror:passwordNotMatch, focused:isConfirmInputFocused, disabled:isPasswordDisabled}" 
+      style="margin-bottom:30px;">
+        <input
+        v-model="passwordConfirm"
+        v-on:keyup.enter="clickContinue()"
+        @focus="passowrdFocused('confirm')"
+        @blur="passowrdBlured('confirm')"
+        v-bind:class="{disabled:isPasswordDisabled}" 
+        id="resetpassword-password-confirm"
+        type="password"
+        autocomplete="new-password">
+        <div v-if="showEyeConfirm" v-on:click="showHideEye('confirm')" class="tooltip" id="show-hide-eye-confirm">
+          <MyIcon v-if="isEyeOffConfirm" class="password-eyes" v-bind:icon="'eye-off'"/>
+          <MyIcon v-else class="password-eyes" v-bind:icon="'eye'"/>
+          <span v-if="isEyeOffConfirm" class="tooltiptext">Hide password</span>
+          <span v-else class="tooltiptext">Show password</span>
+        </div>
+      </div>
+      <!-- /////메세지 -->
+      <transition name="msg-fade" mode="out-in">
+        <div v-if="passwordNotMatch" class="failed-text" style="margin-top:-20px;">
+          <MyIcon v-bind:icon="'error'" v-bind:width="18" />
+          <div style="margin-left:5px;">{{passwordConfirmErrorMsg}}</div>
+        </div>
+      </transition>
+      <!-- 메세지///// -->
+      <div v-on:click="clickContinue()" class="send-btn" v-bind:class="{loading:isLoading, success:passwordSuccess&&password===passwordConfirm}">
+        <div v-if="isLoading" class="loader"></div>
+        <div v-else>Countinue</div>
+      </div>
+      <!-- 테스트///// -->
+      <div v-on:click="test()" class="test">Test reset password expired</div>
+      <!-- /////테스트 -->
     </div>
   </div>
- 
 </template>
 
 <script>
@@ -157,8 +145,18 @@ export default {
     }
   },
   mounted: function () {
+    // 클릭해도 input 포커스 유지하기
+    // var showHideEyeBtn = document.getElementById('show-hide-eye');
+    // showHideEyeBtn.addEventListener('mousedown', e => {
+    //   e.preventDefault()
+    // })
   },
   beforeDestroy: function () {
+    // 리스너 지우기
+    // var showHideEyeBtn = document.getElementById('show-hide-eye');
+    // showHideEyeBtn.removeEventListener('mousedown', e => {
+    //   e.preventDefault()
+    // })
   },
   methods: {
     blurChange: function () {
@@ -181,15 +179,7 @@ export default {
       password.blur()
       this.isPasswordDisabled = true
       passwordConfirm.blur()
-      await this.wait(1000) // Too fast
-
-      ////////////////////
-      // LOGIN ACTION!!!!
-      this.$firebase.auth.updatePassword({password})
-      
-      this.isResetPasswordSuccess = true
-      this.isPasswordDisabled = false
-      this.isLoading = false
+      await this.wait(2000)
       this.isResetPasswordSuccess = true
       this.isPasswordDisabled = false
       this.isLoading = false
@@ -265,7 +255,7 @@ export default {
       }
       else {
         this.passwordSuccess = false
-        // this.passwordHint = true
+        this.passwordHint = true
       }
 
       // 성공! - 강력한 비밀번호
@@ -329,31 +319,8 @@ export default {
   }
 }
 </script>
+
 <style scoped>
-.wrapper {
-  margin: auto;
-  margin-top: 60px;
-  width: 540px;
-}
-.header {
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
-  margin-bottom: 50px;
-  margin-left: 30px;
-}
-.footer {
-  font-size: 12px;
-  color: var(--blue-gray-high);
-  text-align: center;
-  margin-top: 30px;
-}
-.footer-item {
-  cursor: pointer;
-}
-.footer-item:hover {
-  color: var(--gray-high);
-}
 .form {
   margin: 60px 60px 100px 60px;
 }
@@ -560,40 +527,10 @@ input:focus {
   0% { transform: rotate(0deg);}
   100% { transform: rotate(360deg); }
 }
-@keyframes fade {
-  0% { opacity: 0; transform: translate3d(0px, -50px, 0px); }
-  100% { opacity: 100; transform: translate3d(0); }
-}
-@keyframes shake {
-  0% { transform: translate(40px); }
-  20% { transform: translate(-40px); }
-  40% { transform: translate(20px); }
-  60% { transform: translate(-20px); }
-  80% { transform: translate(10px); }
-  100% { transform: translate(0px); }
-}
-
 /****** media ******/
 @media screen and (max-width: 600px) {
-  .wrapper {
-    width: 360px;
-    margin-top: 30px;
-  }
-  .header {
-    margin-bottom: 25px;
-    margin-left: 15px;
-  }
-  .avatar {
-    display: none;
-  }
   .form {
     margin: 60px 30px 100px 30px;
   }
 }
-@media screen and (max-width: 380px) {
-  .wrapper {
-    width: 300px;
-  }
-}
-
 </style>
