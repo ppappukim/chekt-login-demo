@@ -185,7 +185,7 @@ export default {
 
       ////////////////////
       // LOGIN ACTION!!!!
-      this.$firebase.auth.updatePassword({password})
+      this.$firebase.auth.emailHandling({password})
       
       this.isResetPasswordSuccess = true
       this.isPasswordDisabled = false
