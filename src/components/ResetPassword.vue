@@ -157,6 +157,7 @@ export default {
     }
   },
   mounted: function () {
+    this.$firebase.auth.emailHandling()
   },
   beforeDestroy: function () {
   },
@@ -176,16 +177,17 @@ export default {
       this.isLoading = true // loading animation
 
       // 준비 - 패스워드 인풋연결
-      var password = document.getElementById("resetpassword-password")
-      var passwordConfirm = document.getElementById("resetpassword-password-confirm")
-      password.blur()
+      var passwordDom = document.getElementById("resetpassword-password")
+      var passwordConfirmDom = document.getElementById("resetpassword-password-confirm")
+      passwordDom.blur()
       this.isPasswordDisabled = true
-      passwordConfirm.blur()
+      passwordConfirmDom.blur()
       await this.wait(1000) // Too fast
 
       ////////////////////
       // LOGIN ACTION!!!!
-      this.$firebase.auth.emailHandling({password})
+      this.$firebase.auth.handleResetPassword(this.password)
+      console.log('????');
       
       this.isResetPasswordSuccess = true
       this.isPasswordDisabled = false

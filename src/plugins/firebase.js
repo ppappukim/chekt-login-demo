@@ -28,7 +28,7 @@ const FirebasePlugin = {
     };
 
     // INIT - firebase
-    firebase.initializeApp(firebaseConfig)
+    var app = firebase.initializeApp(firebaseConfig)
 
     //////////////////////////////////////////
     // AUTH //////////////////////////////////
@@ -62,49 +62,58 @@ const FirebasePlugin = {
       });
     }
 
-    var emailHandling = function ({password}) {
+    // Get the action to complete.
+    var mode = null
+    // Get the one-time code from the query parameter.
+    var actionCode = null
+    // (Optional) Get the continue URL from the query parameter if available.
+    var continueUrl = null
+    // (Optional) Get the language code if available.
+    var lang = null
+  
+    // Configure the Firebase SDK.
+    // This is the minimum configuration required for the API to be used.
+    var auth = app.auth();
+
+    var emailHandling = function () {
+      console.log('emailHandling start');
       document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOMContentLoaded start');
         // TODO: Implement getParameterByName()
       
         // Get the action to complete.
-        var mode = getParameterByName('mode');
+        mode = getParameterByName('mode');
         // Get the one-time code from the query parameter.
-        var actionCode = getParameterByName('oobCode');
+        actionCode = getParameterByName('oobCode');
         // (Optional) Get the continue URL from the query parameter if available.
-        var continueUrl = getParameterByName('continueUrl');
+        continueUrl = getParameterByName('continueUrl');
         // (Optional) Get the language code if available.
-        var lang = getParameterByName('lang') || 'en';
-      
-        // Configure the Firebase SDK.
-        // This is the minimum configuration required for the API to be used.
-        var config = {
-          'apiKey': firebaseConfig.apiKey // Copy this key from the web initialization
-                                  // snippet found in the Firebase console.
-        };
-        var app = firebase.initializeApp(config);
-        var auth = app.auth();
+        lang = getParameterByName('lang') || 'en';
+
       
         // Handle the user management action.
-        switch (mode) {
-          case 'resetPassword':
-            // Display reset password handler and UI.
-            handleResetPassword(auth, actionCode, continueUrl, lang, password);
-            break;
-          case 'recoverEmail':
-            // Display email recovery handler and UI.
-            handleRecoverEmail(auth, actionCode, lang);
-            break;
-          case 'verifyEmail':
-            // Display email verification handler and UI.
-            handleVerifyEmail(auth, actionCode, continueUrl, lang);
-            break;
-          default:
-            // Error: invalid mode.
-        }
+        // switch (mode) {
+        //   case 'resetPassword':
+        //     // Display reset password handler and UI.
+        //     handleResetPassword(auth, actionCode, continueUrl, lang, password);
+        //     break;
+        //   case 'recoverEmail':
+        //     // Display email recovery handler and UI.
+        //     handleRecoverEmail(auth, actionCode, lang);
+        //     break;
+        //   case 'verifyEmail':
+        //     // Display email verification handler and UI.
+        //     handleVerifyEmail(auth, actionCode, continueUrl, lang);
+        //     break;
+        //   default:
+        //     alert('invalid mode.')
+        //     // Error: invalid mode.
+        // }
       }, false);
     }
-
-    this.handleResetPassword = function (auth, actionCode, continueUrl, lang, password) {
+    var handleResetPassword = function (password) {
+      console.log('handleResetPassword start');
+      console.log(password);
       // Localize the UI to the selected language as determined by the lang
       // parameter.
 
@@ -178,6 +187,7 @@ const FirebasePlugin = {
         deleteAccount,
         sendPasswordResetEmail,
         emailHandling,
+        handleResetPassword,
         getUser: function () {
           return firebase.auth().currentUser
         },
