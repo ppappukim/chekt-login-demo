@@ -103,7 +103,7 @@ const FirebasePlugin = {
       // parameter.
 
       // Verify the password reset code is valid.
-      auth.verifyPasswordResetCode(actionCode).then((email) => {
+      emailConfig.auth.verifyPasswordResetCode(actionCode).then((email) => {
         var accountEmail = email;
 
         // TODO: Show the reset screen with the user's email and ask the user for
@@ -111,7 +111,7 @@ const FirebasePlugin = {
         var newPassword = password;
 
         // Save the new password.
-        auth.confirmPasswordReset(emailConfig.actionCode, newPassword).then((resp) => {
+        emailConfig.auth.confirmPasswordReset(emailConfig.actionCode, newPassword).then((resp) => {
           console.log(resp);
           // Password reset has been confirmed and new password updated.
 
