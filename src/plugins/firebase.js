@@ -103,7 +103,7 @@ const FirebasePlugin = {
       // parameter.
 
       // Verify the password reset code is valid.
-      emailConfig.auth.verifyPasswordResetCode(actionCode).then((email) => {
+      emailConfig.auth.verifyPasswordResetCode(emailConfig.actionCode).then((email) => {
         var accountEmail = email;
 
         // TODO: Show the reset screen with the user's email and ask the user for
