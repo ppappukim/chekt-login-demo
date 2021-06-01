@@ -76,35 +76,38 @@ const FirebasePlugin = {
       auth: app.auth()
     }
 
-    var getParameterByName = function (name, url = window.location.href) {
-      console.log('getParameterByName start');
-      name = name.replace(/[\[\]]/g, '\\$&');
-      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-          results = regex.exec(url)
-      if (!results) return null
-      if (!results[2]) return ''
-      return decodeURIComponent(results[2].replace(/\+/g, ' '))
-    }
+    // var getParameterByName = function (name, url = window.location.href) {
+    //   console.log('getParameterByName start');
+    //   name = name.replace(/[\[\]]/g, '\\$&');
+    //   var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+    //       results = regex.exec(url)
+    //   if (!results) return null
+    //   if (!results[2]) return ''
+    //   return decodeURIComponent(results[2].replace(/\+/g, ' '))
+    // }
 
     var emailHandling = function () {
-      console.log('emailHandling start');
       document.addEventListener('DOMContentLoaded', () => {
-        console.log('DOMContentLoaded start');
-        emailConfig.actionCode = getParameterByName('oobCode')
+        emailConfig.actionCode = Vue.tool.getParameterByName('oobCode')
         // TODO: Implement getParameterByName()
         console.log(emailConfig.actionCode);
+        verifyPasswordResetCode()
       }, false);
     }
 
-    var handleResetPassword = function (password) {
-      console.log('handleResetPassword start');
-      console.log(password);
-      // Localize the UI to the selected language as determined by the lang
-      // parameter.
-
+    var verifyPasswordResetCode = function () {
       // Verify the password reset code is valid.
       emailConfig.auth.verifyPasswordResetCode(emailConfig.actionCode).then((email) => {
-        var accountEmail = email;
+        return 'successful'
+      }).catch((error) => {
+          console.log(error)
+          return error
+          // Invalid or expired action code. Ask user to try to reset the password
+          // again.
+        })
+    }
+
+    var handleResetPassword = function (password) {
 
         // TODO: Show the reset screen with the user's email and ask the user for
         // the new password.
@@ -112,7 +115,6 @@ const FirebasePlugin = {
 
         // Save the new password.
         emailConfig.auth.confirmPasswordReset(emailConfig.actionCode, newPassword).then((resp) => {
-          console.log(resp);
           // Password reset has been confirmed and new password updated.
 
           // TODO: Display a link back to the app, or sign-in the user directly
@@ -127,11 +129,6 @@ const FirebasePlugin = {
             // Error occurred during confirmation. The code might have expired or the
             // password is too weak.
           });
-        }).catch((error) => {
-          console.log(error)
-          // Invalid or expired action code. Ask user to try to reset the password
-          // again.
-        });
 
     }
     
@@ -173,6 +170,7 @@ const FirebasePlugin = {
         sendPasswordResetEmail,
         emailHandling,
         handleResetPassword,
+        verifyPasswordResetCode,
         getUser: function () {
           return firebase.auth().currentUser
         },

@@ -158,6 +158,7 @@ export default {
   },
   mounted: function () {
     this.$firebase.auth.emailHandling()
+    console.log(this.$firebase.auth.verifyPasswordResetCode());
   },
   beforeDestroy: function () {
   },
