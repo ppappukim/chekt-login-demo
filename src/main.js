@@ -7,11 +7,13 @@ import store  from './store'
 
 // Plugins
 import FirebasePlugin from './plugins/firebase'
+import ToolPlugin from './plugins/tool'
 
 Vue.config.productionTip = false
 
 // CUSTOM 
 Vue.use(FirebasePlugin)
+Vue.use(ToolPlugin)
 
 /* eslint-disable no-new */
 new Vue({

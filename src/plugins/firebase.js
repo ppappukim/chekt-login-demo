@@ -62,55 +62,40 @@ const FirebasePlugin = {
       });
     }
 
-    // Get the action to complete.
-    var mode = null
-    // Get the one-time code from the query parameter.
-    var actionCode = null
-    // (Optional) Get the continue URL from the query parameter if available.
-    var continueUrl = null
-    // (Optional) Get the language code if available.
-    var lang = null
-  
-    // Configure the Firebase SDK.
-    // This is the minimum configuration required for the API to be used.
-    var auth = app.auth();
+    var emailConfig = {
+      // Get the action to complete.
+      mode: null,
+      // Get the one-time code from the query parameter.
+      actionCode: null,
+      // (Optional) Get the continue URL from the query parameter if available.
+      continueUrl: null,
+      // (Optional) Get the language code if available.
+      lang: null,
+      // Configure the Firebase SDK.
+      // This is the minimum configuration required for the API to be used.
+      auth: app.auth()
+    }
+
+    var getParameterByName = function (name, url = window.location.href) {
+      console.log('getParameterByName start');
+      name = name.replace(/[\[\]]/g, '\\$&');
+      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+          results = regex.exec(url)
+      if (!results) return null
+      if (!results[2]) return ''
+      return decodeURIComponent(results[2].replace(/\+/g, ' '))
+    }
 
     var emailHandling = function () {
       console.log('emailHandling start');
       document.addEventListener('DOMContentLoaded', () => {
         console.log('DOMContentLoaded start');
+        emailConfig.actionCode = getParameterByName('oobCode')
         // TODO: Implement getParameterByName()
-      
-        // Get the action to complete.
-        mode = getParameterByName('mode');
-        // Get the one-time code from the query parameter.
-        actionCode = getParameterByName('oobCode');
-        // (Optional) Get the continue URL from the query parameter if available.
-        continueUrl = getParameterByName('continueUrl');
-        // (Optional) Get the language code if available.
-        lang = getParameterByName('lang') || 'en';
-
-      
-        // Handle the user management action.
-        // switch (mode) {
-        //   case 'resetPassword':
-        //     // Display reset password handler and UI.
-        //     handleResetPassword(auth, actionCode, continueUrl, lang, password);
-        //     break;
-        //   case 'recoverEmail':
-        //     // Display email recovery handler and UI.
-        //     handleRecoverEmail(auth, actionCode, lang);
-        //     break;
-        //   case 'verifyEmail':
-        //     // Display email verification handler and UI.
-        //     handleVerifyEmail(auth, actionCode, continueUrl, lang);
-        //     break;
-        //   default:
-        //     alert('invalid mode.')
-        //     // Error: invalid mode.
-        // }
+        console.log(emailConfig.actionCode);
       }, false);
     }
+
     var handleResetPassword = function (password) {
       console.log('handleResetPassword start');
       console.log(password);
@@ -126,7 +111,7 @@ const FirebasePlugin = {
         var newPassword = password;
 
         // Save the new password.
-        auth.confirmPasswordReset(actionCode, newPassword).then((resp) => {
+        auth.confirmPasswordReset(emailConfig.actionCode, newPassword).then((resp) => {
           console.log(resp);
           // Password reset has been confirmed and new password updated.
 
