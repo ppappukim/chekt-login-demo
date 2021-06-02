@@ -3,7 +3,8 @@
 
     <!-- 1. sent page -->
     <div v-if="isSent" class="form">
-      <div class="title">Thanks, check your email for instructions to reset your password</div>
+      <div v-if="isEmailSendFailed" class="title">{{failedMessage}}</div>
+      <div v-else class="title">Thanks, check your email for instructions to reset your password</div>
       <div class="desc">
         Didn't get the email? Check your spam folder or <span v-on:click="clickResend(email)" class="resend">Resend</span>
       </div>
@@ -60,7 +61,7 @@ export default {
       isForgotPasswordMode: false,
       isSent: false,
       isEmailResending: false,
-      failedMessage: 'We couldn’t find that email. Please try again.',
+      failedMessage: '',
     }
   },
   computed: {

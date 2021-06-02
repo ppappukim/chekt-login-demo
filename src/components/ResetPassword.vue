@@ -160,8 +160,8 @@ export default {
       this.passwordConfirmSecureCheck()
     }
   },
-  created: function () {
-    this.$firebase.auth.emailHandling()
+  created: async function () {
+    await this.$firebase.auth.emailHandling()
   },
   mounted: function () {
   },
