@@ -9,6 +9,7 @@ import '@firebase/analytics'
 import '@firebase/auth'
 // import "store";
 import store from '../store';
+import router from '../router'
 
 
 const FirebasePlugin = {
@@ -205,7 +206,7 @@ const FirebasePlugin = {
     var isSignInWithEmailLink = function () {
       // Confirm the link is a sign-in with email link.
       if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
-        this.$router.push({path:'/passwordless'})
+        router.push({path:'/passwordless'})
         // Additional state parameters can also be passed via URL.
         // This can be used to continue the user's intended action before triggering
         // the sign-in operation.
