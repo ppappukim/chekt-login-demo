@@ -143,8 +143,9 @@ export default {
   },
   watch: {
     resetEmailVerifyStatus: function () {
-      console.log(this.resetEmailVerifyStatus.message);
-      if (this.resetEmailVerifyStatus !== 'successful') this.isExpired = true
+      console.log(this.resetEmailVerifyStatus);
+      if (this.resetEmailVerifyStatus === 'successful') this.isResetPasswordSuccess = true
+      else this.isExpired = true
     },
     // resetEmailConfirmStatus: function () {
     //   console.log(this.resetEmailConfirmStatus.message);
