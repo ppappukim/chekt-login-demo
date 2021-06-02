@@ -100,9 +100,12 @@ const FirebasePlugin = {
 
     var verifyPasswordResetCode = function () {
       // Verify the password reset code is valid.
+      console.log('verifyPasswordResetCode start');
       emailConfig.auth.verifyPasswordResetCode(emailConfig.actionCode).then((email) => {
+        console.log('verifyPasswordResetCode error');
         store.commit('CHECK_RESET_EMAIL_VERIFY_STATUS', 'sucessful')
       }).catch((error) => {
+        console.log('verifyPasswordResetCode error');
         store.commit('CHECK_RESET_EMAIL_VERIFY_STATUS', error)
         // Invalid or expired action code. Ask user to try to reset the password again.
       })
