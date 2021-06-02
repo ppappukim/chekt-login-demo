@@ -206,7 +206,6 @@ const FirebasePlugin = {
     var isSignInWithEmailLink = function () {
       // Confirm the link is a sign-in with email link.
       if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
-        router.push({path:'/passwordless'})
         // Additional state parameters can also be passed via URL.
         // This can be used to continue the user's intended action before triggering
         // the sign-in operation.
@@ -223,7 +222,9 @@ const FirebasePlugin = {
           .then((result) => {
             // Clear email from storage.
             window.localStorage.removeItem('emailForSignIn');
-            console.log('signInWithEmailLink start');
+            console.log('signInWithEmailLink success!');
+            router.push({path:'/'})
+            alert('login success!')
             // You can access the new user via result.user
             // Additional user info profile not available via:
             // result.additionalUserInfo.profile == null
