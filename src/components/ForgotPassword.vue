@@ -1,20 +1,26 @@
 <template>
   <div class="body" v-bind:class="{failed:isEmailSendFailed}">
-    <div v-if="isSend" class="form">
+
+    <!-- 1. send page -->
+    <div v-if="isSent" class="form">
       <div class="title">Thanks, check your email for instructions to reset your password</div>
       <div class="desc">
-        Didn't get the email? Check your spam folder or <span v-on:click="clickResend()" class="resend">Resend</span>
+        Didn't get the email? Check your spam folder or <span v-on:click="clickResend(email)" class="resend">Resend</span>
       </div>
       <div v-on:click="testResetPasswordsetting()" class="desc" style="color:var(--primary);cursor:pointer;">
         Test reset password setting
       </div>
     </div>
+
+    <!-- 2. resend page -->
     <div v-else-if="isEmailResending" class="form">
       <div class="title">Email Reseding...</div>
       <div class="desc">
         Please note that if you make too many requests in a short time, you may not receive your email.
       </div>
     </div>
+
+    <!-- 3. default page -->
     <div v-else class="form">
       <div class="form-header">
         <div class="title">Reset your password</div>
@@ -55,8 +61,9 @@ export default {
       isLoading: false,
       isEmailSendFailed: false,
       isForgotPasswordMode: false,
-      isSend: false,
+      isSent: false,
       isEmailResending: false,
+      failedMessage: 'We couldn’t find that email. Please try again.',
     }
   },
   computed: {
@@ -79,40 +86,50 @@ export default {
       emailDom.disabled = true
       await this.wait(2000) // Too fast
 
-      ////////////////////
-      // RESET PASSWORD SEND ACTION!!!!
-      console.log(email);
-      try {
-        // CASE 1 - Sign IN successful
-        await this.$firebase.auth.sendPasswordResetEmail({email})
-        this.isSend = true
-      } catch (err) {
-        console.log(err);
-        switch (err.code) {
-          case 'auth/argument-error':
-            break;
-          case 'auth/user-not-found':
-            break;
-          case 'auth/user-not-found':
-            break;
-          // default: this.showCheckModal = true
-        }
-      }
+      // RESET PASSWORD SEND ACTION
+      /////////////////////////////
+      this.sendResetPassword(email)
+      /////////////////////////////
+
       emailDom.disabled = false
       this.isLoading = false
-      // if (this.email === 'test@chekt.com') this.isSend = true
-      // else this.isEmailSendFailed = true
     },
-    // emit 함수
+
+    sendResetPassword: async function (email) {
+      try {
+        // CASE 1 - Log IN successful
+        await this.$firebase.auth.sendPasswordResetEmail({email})
+        this.isSent = true
+      } catch (err) {
+        console.log(err);
+        this.isEmailSendFailed = true
+        this.failedMessage = err.message
+        // switch (err.code) {
+        //   case 'auth/argument-error':
+        //     this.isEmailSendFailed = true
+        //     break;
+        //   case 'auth/user-not-found':
+        //     this.isEmailSendFailed = true
+        //     break;
+        //   default: this.isEmailSendFailed = true
+        // }
+      }
+      this.isSent = true
+    },
     clickReturnToLogin: function () {
-      this.$emit("child")
+      this.$router.push({path: '/'})
     },
-    clickResend: async function () {
+    clickResend: async function (email) {
       this.isEmailResending = true
-      this.isSend = false
-      await this.wait(2000)
+      this.isSent = false
+      await this.wait(1000) // Too fast
+
+      // RESET PASSWORD SEND ACTION
+      /////////////////////////////
+      this.sendResetPassword(email)
+      /////////////////////////////
+      
       this.isEmailResending = false
-      this.isSend = true
     },
     focusSyncInput: function () {
       this.email = this.emailInputInfo

@@ -2,9 +2,9 @@
   <div class="body">
     <div class="form">
       <div class="form-header">
-        <div class="title">This password reset link has expired.</div>
+        <div class="title">This password reset link is invalid.</div>
         <div class="desc">
-          Currently, the link is not available. Please resetting your password again.
+          {{descMessage}}
         </div>
         <div v-on:click="clickResetting()" class="action">
           Try resetting your password again.
@@ -23,15 +23,26 @@ export default {
   name: 'resetpassword',
   data () {
     return {
+      descMessage: 'Currently, the link is not available. Please resetting your password again.',
     }
   },
+  mounted: function () {
+    if (!this.resetEmailVerifyStatus) return 
+    this.descMessage = this.resetEmailVerifyStatus.message
+  },
   computed: {
+    resetEmailVerifyStatus: function () {
+      return this.$store.getters.resetEmailVerifyStatus
+    },
   },
   watch: {
+    resetEmailVerifyStatus: function () {
+      if (this.resetEmailVerifyStatus !== 'successful') this.descMessage = this.resetEmailVerifyStatus.message
+    },
   },
   methods: {
     clickResetting: function () {
-      this.$emit("resetchild", false) // isExpired를 false로 바꾼다.
+      this.$router.push({path:'/forgotpassword'})
     },
     wait: function (time) {
       return new Promise(resolve => {

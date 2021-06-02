@@ -147,9 +147,8 @@ export default {
       this.isLoading = false
 
     },
-    // emit 함수
     clickReturnToLogin: function () {
-      this.$emit("passwordlesschild")
+      this.$router.push({path: '/'})
     },
     clickResend: async function () {
       this.isEmailResending = true

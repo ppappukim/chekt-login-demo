@@ -7,6 +7,8 @@ import '@firebase/analytics'
 // Add the Firebase products that you want to use
 // import "firebase/auth";
 import '@firebase/auth'
+// import "store";
+import store from '../store';
 
 
 const FirebasePlugin = {
@@ -66,7 +68,7 @@ const FirebasePlugin = {
       // Get the action to complete.
       mode: null,
       // Get the one-time code from the query parameter.
-      actionCode: null,
+      actionCode: 'j8l-NDnwfSN0BjKn-ZKXBoPjw_GwmWRcrcRi9ZlTztgAAAF5xxyVhQ',
       // (Optional) Get the continue URL from the query parameter if available.
       continueUrl: null,
       // (Optional) Get the language code if available.
@@ -88,9 +90,10 @@ const FirebasePlugin = {
 
     var emailHandling = function () {
       document.addEventListener('DOMContentLoaded', () => {
-        emailConfig.actionCode = Vue.tool.getParameterByName('oobCode')
-        // TODO: Implement getParameterByName()
+        // URL에서 actionCode 뽑아오기.
+        // emailConfig.actionCode = Vue.tool.getParameterByName('oobCode')
         console.log(emailConfig.actionCode);
+        if (!emailConfig.actionCode) return
         verifyPasswordResetCode()
       }, false);
     }
@@ -98,24 +101,23 @@ const FirebasePlugin = {
     var verifyPasswordResetCode = function () {
       // Verify the password reset code is valid.
       emailConfig.auth.verifyPasswordResetCode(emailConfig.actionCode).then((email) => {
-        return 'successful'
+        store.commit('CHECK_RESET_EMAIL_VERIFY_STATUS', 'sucessful')
       }).catch((error) => {
-          console.log(error)
-          return error
-          // Invalid or expired action code. Ask user to try to reset the password
-          // again.
-        })
+        store.commit('CHECK_RESET_EMAIL_VERIFY_STATUS', error)
+        // Invalid or expired action code. Ask user to try to reset the password again.
+      })
     }
 
     var handleResetPassword = function (password) {
 
         // TODO: Show the reset screen with the user's email and ask the user for
         // the new password.
-        var newPassword = password;
+        var newPassword = password
 
         // Save the new password.
         emailConfig.auth.confirmPasswordReset(emailConfig.actionCode, newPassword).then((resp) => {
           // Password reset has been confirmed and new password updated.
+          store.commit('CHECK_RESET_EMAIL_CONFIRM_STATUS', 'sucessful')
 
           // TODO: Display a link back to the app, or sign-in the user directly
           // if the page belongs to the same domain as the app:
@@ -126,6 +128,7 @@ const FirebasePlugin = {
           // additional state determined from that URL's parameters.
           }).catch((error) => {
             console.log(error)
+            store.commit('CHECK_RESET_EMAIL_CONFIRM_STATUS', error)
             // Error occurred during confirmation. The code might have expired or the
             // password is too weak.
           });
