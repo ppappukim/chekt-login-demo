@@ -121,17 +121,29 @@ export default {
     clickSend: async function () {
       this.isLoading = true
       this.isEmailSendFailed = false
-      var email = document.getElementById("forgotpassword-email")
-      email.blur()
-      email.disabled = true
-      await this.wait(2000)
-      email.disabled = false
-      this.isLoading = false  
-      if (this.email === 'test@chekt.com') {
+      var emailDom = document.getElementById("forgotpassword-email")
+      emailDom.blur()
+      emailDom.disabled = true
+      await this.wait(1000) // Too fast!
+
+      ///////////////////
+      // SEND LINK ACTION
+      try {
+        await this.$firebase.auth.sendSignInLinkToEmail(this.email)
         this.isSend = true
         this.codeInputFocus()
-      } 
-      else this.isEmailSendFailed = true
+      } catch (err) {
+        console.log(err);
+        this.isEmailSendFailed = true
+      }
+      try {
+        await this.$firebase.auth.isSignInWithEmailLink()
+      } catch (err) {
+        console.log(err);
+      }
+
+      emailDom.disabled = false
+      this.isLoading = false  
     },
     clickSubmit: async function () {
       this.isCodeAuthFailed = false

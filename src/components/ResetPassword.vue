@@ -193,7 +193,7 @@ export default {
       ////////////////////
       // LOGIN ACTION!!!!
       try {
-        this.$firebase.auth.handleResetPassword(this.password)
+        await this.$firebase.auth.handleResetPassword(this.password)
         this.isResetPasswordSuccess = true
       } catch (err) {
         isExpired = true
