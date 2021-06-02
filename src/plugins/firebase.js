@@ -93,7 +93,7 @@ const FirebasePlugin = {
       // Get the one-time code from the query parameter.
       actionCode: null, //'j8l-NDnwfSN0BjKn-ZKXBoPjw_GwmWRcrcRi9ZlTztgAAAF5xxyVhQ',
       // (Optional) Get the continue URL from the query parameter if available.
-      continueUrl: null,
+      continueUrl: `https://chekt-login-demo.firebaseapp.com/resetpassword`,
       // (Optional) Get the language code if available.
       lang: null,
       // Configure the Firebase SDK.
@@ -180,7 +180,7 @@ const FirebasePlugin = {
       //   installApp: true,
       //   minimumVersion: '12'
       // },
-      dynamicLinkDomain: `https://chekt-login-demo.firebaseapp.com/passwordless`
+      // dynamicLinkDomain: `https://chekt-login-demo.firebaseapp.com/passwordless`
     }
 
     var sendSignInLinkToEmail = function (email) {
