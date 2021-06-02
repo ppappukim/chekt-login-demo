@@ -168,7 +168,7 @@ const FirebasePlugin = {
     var passwordlessConfig = {
       // URL you want to redirect back to. The domain (www.example.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
-      url: `https://chekt-login-demo.firebaseapp.com/passwordless`,
+      url: `https://chekt-login-demo.firebaseapp.com`,
       // This must be true.
       handleCodeInApp: true,
       // iOS: {
@@ -205,6 +205,7 @@ const FirebasePlugin = {
     var isSignInWithEmailLink = function () {
       // Confirm the link is a sign-in with email link.
       if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
+        this.$router.push({path:'/passwordless'})
         // Additional state parameters can also be passed via URL.
         // This can be used to continue the user's intended action before triggering
         // the sign-in operation.
@@ -222,7 +223,6 @@ const FirebasePlugin = {
             // Clear email from storage.
             window.localStorage.removeItem('emailForSignIn');
             console.log('signInWithEmailLink start');
-            console.log(result);
             // You can access the new user via result.user
             // Additional user info profile not available via:
             // result.additionalUserInfo.profile == null
