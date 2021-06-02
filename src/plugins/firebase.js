@@ -64,6 +64,7 @@ const FirebasePlugin = {
       });
     }
 
+    // INIT email config
     var emailConfig = {
       // Get the action to complete.
       mode: null,
@@ -77,17 +78,7 @@ const FirebasePlugin = {
       // This is the minimum configuration required for the API to be used.
       auth: app.auth()
     }
-
-    // var getParameterByName = function (name, url = window.location.href) {
-    //   console.log('getParameterByName start');
-    //   name = name.replace(/[\[\]]/g, '\\$&');
-    //   var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-    //       results = regex.exec(url)
-    //   if (!results) return null
-    //   if (!results[2]) return ''
-    //   return decodeURIComponent(results[2].replace(/\+/g, ' '))
-    // }
-
+    
     var emailHandling = function () {
       document.addEventListener('DOMContentLoaded', () => {
         // URL에서 actionCode 뽑아오기.

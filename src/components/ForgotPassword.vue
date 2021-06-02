@@ -1,7 +1,7 @@
 <template>
   <div class="body" v-bind:class="{failed:isEmailSendFailed}">
 
-    <!-- 1. send page -->
+    <!-- 1. sent page -->
     <div v-if="isSent" class="form">
       <div class="title">Thanks, check your email for instructions to reset your password</div>
       <div class="desc">
@@ -117,6 +117,7 @@ export default {
       this.$router.push({path: '/'})
     },
     clickResend: async function (email) {
+      this.isSent = false
       this.isEmailResending = true
       await this.wait(1000) // Too fast
 
