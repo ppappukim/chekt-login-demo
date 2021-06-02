@@ -7,9 +7,6 @@
       <div class="desc">
         Didn't get the email? Check your spam folder or <span v-on:click="clickResend(email)" class="resend">Resend</span>
       </div>
-      <div v-on:click="testResetPasswordsetting()" class="desc" style="color:var(--primary);cursor:pointer;">
-        Test reset password setting
-      </div>
     </div>
 
     <!-- 2. resend page -->
@@ -84,11 +81,11 @@ export default {
       var emailDom = document.getElementById("forgotpassword-email")
       emailDom.blur()
       emailDom.disabled = true
-      await this.wait(2000) // Too fast
+      await this.wait(1000) // Too fast
 
       // RESET PASSWORD SEND ACTION
       /////////////////////////////
-      this.sendResetPassword(email)
+      await this.sendResetPassword(email)
       /////////////////////////////
 
       emailDom.disabled = false
@@ -121,12 +118,11 @@ export default {
     },
     clickResend: async function (email) {
       this.isEmailResending = true
-      this.isSent = false
       await this.wait(1000) // Too fast
 
       // RESET PASSWORD SEND ACTION
       /////////////////////////////
-      this.sendResetPassword(email)
+      await this.sendResetPassword(email)
       /////////////////////////////
       
       this.isEmailResending = false
@@ -136,9 +132,6 @@ export default {
       var email = document.getElementById("forgotpassword-email")
       if (email !== null)
       email.focus()
-    },
-    testResetPasswordsetting: function () {
-      this.$emit("childresetpasswordsetting")
     },
     wait: function (time) {
       return new Promise(resolve => {

@@ -93,7 +93,7 @@
         <div v-else>Countinue</div>
       </div>
       <!-- 테스트///// -->
-      <div v-on:click="test()" class="test">Test reset password expired</div>
+      <!-- <div v-on:click="test()" class="test">Test reset password expired</div> -->
       <!-- /////테스트 -->
     </div>
   </div>
