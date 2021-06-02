@@ -180,7 +180,7 @@ const FirebasePlugin = {
       //   installApp: true,
       //   minimumVersion: '12'
       // },
-      // dynamicLinkDomain: 'example.page.link'
+      dynamicLinkDomain: `https://chekt-login-demo.firebaseapp.com/passwordless`
     }
 
     var sendSignInLinkToEmail = function (email) {
@@ -203,9 +203,9 @@ const FirebasePlugin = {
       });
     }
 
-    var isSignInWithEmailLink = function (url) {
+    var isSignInWithEmailLink = function () {
       // Confirm the link is a sign-in with email link.
-      if (firebase.auth().isSignInWithEmailLink(url)) {
+      if (firebase.auth().isSignInWithEmailLink(actionCodeSettings.url)) {
         // Additional state parameters can also be passed via URL.
         // This can be used to continue the user's intended action before triggering
         // the sign-in operation.
@@ -218,7 +218,7 @@ const FirebasePlugin = {
           email = window.prompt('Please provide your email for confirmation');
         }
         // The client SDK will parse the code from the link for you.
-        firebase.auth().signInWithEmailLink(email, url)
+        firebase.auth().signInWithEmailLink(email, actionCodeSettings.url)
           .then((result) => {
             // Clear email from storage.
             window.localStorage.removeItem('emailForSignIn');
