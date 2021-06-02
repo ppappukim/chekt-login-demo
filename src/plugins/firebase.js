@@ -57,7 +57,7 @@ const FirebasePlugin = {
     var sendPasswordResetEmail = function ({email}) {
       return firebase.auth().sendPasswordResetEmail(email).then(function() {
         // Email sent.
-        alert('Reset Email send success!')
+        console.log('Reset Email send success!')
       }).catch(function(error) {
         // An error happened.
         alert(error);
@@ -68,7 +68,7 @@ const FirebasePlugin = {
       // Get the action to complete.
       mode: null,
       // Get the one-time code from the query parameter.
-      actionCode: 'j8l-NDnwfSN0BjKn-ZKXBoPjw_GwmWRcrcRi9ZlTztgAAAF5xxyVhQ',
+      actionCode: null,//'j8l-NDnwfSN0BjKn-ZKXBoPjw_GwmWRcrcRi9ZlTztgAAAF5xxyVhQ',
       // (Optional) Get the continue URL from the query parameter if available.
       continueUrl: null,
       // (Optional) Get the language code if available.
@@ -91,7 +91,7 @@ const FirebasePlugin = {
     var emailHandling = function () {
       document.addEventListener('DOMContentLoaded', () => {
         // URL에서 actionCode 뽑아오기.
-        // emailConfig.actionCode = Vue.tool.getParameterByName('oobCode')
+        emailConfig.actionCode = Vue.tool.getParameterByName('oobCode')
         console.log(emailConfig.actionCode);
         if (!emailConfig.actionCode) return
         verifyPasswordResetCode()
