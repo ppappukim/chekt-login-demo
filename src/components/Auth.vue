@@ -38,7 +38,12 @@ export default {
   },
   computed: {
   },
-  created: function () {
+  created: async function () {
+    try {
+      await this.$firebase.auth.isSignInWithEmailLink()
+    } catch (err) {
+      console.log(err);
+    }
   },
   methods: {
   }

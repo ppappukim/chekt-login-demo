@@ -136,12 +136,6 @@ export default {
         console.log(err);
         this.isEmailSendFailed = true
       }
-      try {
-        await this.$firebase.auth.isSignInWithEmailLink()
-      } catch (err) {
-        console.log(err);
-      }
-
       emailDom.disabled = false
       this.isLoading = false  
     },
