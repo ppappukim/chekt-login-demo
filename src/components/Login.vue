@@ -56,7 +56,6 @@ export default {
       this.$store.commit('GET_EMAIL_INPUT_INFO', this.email)
       if (this.email === 'test@chekt.com') this.isEmailExist = true
       else this.isEmailExist = false
-      console.log(this.emailInputInfo);
     }
   },
   computed: {
