@@ -124,7 +124,7 @@ const FirebasePlugin = {
     var verifyPasswordResetCode = function () {
       // Verify the password reset code is valid.
       console.log('verifyPasswordResetCode start');
-      resetEmailConfig.auth.verifyPasswordResetCode(resetEmailConfig).then((email) => {
+      resetEmailConfig.auth.verifyPasswordResetCode(resetEmailConfig.actionCode).then((email) => {
         console.log('verifyPasswordResetCode success');
         store.commit('CHECK_RESET_EMAIL_VERIFY_STATUS', 'successful')
       }).catch((error) => {
@@ -141,23 +141,24 @@ const FirebasePlugin = {
         var newPassword = password
 
         // Save the new password.
-        resetEmailConfig.auth.confirmPasswordReset(resetEmailConfig.actionCode, newPassword).then((resp) => {
-          // Password reset has been confirmed and new password updated.
-          store.commit('CHECK_RESET_EMAIL_CONFIRM_STATUS', 'sucessful')
+        resetEmailConfig.auth.confirmPasswordReset(resetEmailConfig.actionCode, newPassword)//.then((resp) => {
+          // // Password reset has been confirmed and new password updated.
+          // console.log('confirmPasswordReset sucessful');
+          // store.commit('CHECK_RESET_EMAIL_CONFIRM_STATUS', 'sucessful')
 
-          // TODO: Display a link back to the app, or sign-in the user directly
-          // if the page belongs to the same domain as the app:
-          // auth.signInWithEmailAndPassword(accountEmail, newPassword);
+          // // TODO: Display a link back to the app, or sign-in the user directly
+          // // if the page belongs to the same domain as the app:
+          // // auth.signInWithEmailAndPassword(accountEmail, newPassword);
 
-          // TODO: If a continue URL is available, display a button which on
-          // click redirects the user back to the app via continueUrl with
-          // additional state determined from that URL's parameters.
-          }).catch((error) => {
-            console.log(error)
-            store.commit('CHECK_RESET_EMAIL_CONFIRM_STATUS', error)
-            // Error occurred during confirmation. The code might have expired or the
-            // password is too weak.
-          });
+          // // TODO: If a continue URL is available, display a button which on
+          // // click redirects the user back to the app via continueUrl with
+          // // additional state determined from that URL's parameters.
+          // }).catch((error) => {
+          //   console.log('confirmPasswordReset error');
+          //   store.commit('CHECK_RESET_EMAIL_CONFIRM_STATUS', error)
+          //   // Error occurred during confirmation. The code might have expired or the
+          //   // password is too weak.
+          // });
 
     }
 
