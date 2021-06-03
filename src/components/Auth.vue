@@ -42,7 +42,9 @@ export default {
     try {
       await this.$firebase.auth.isSignInWithEmailLink()
     } catch (err) {
+      console.log('isSignInWithEmailLink');
       console.log(err);
+      this.$router.push({path:'/passwordlessExpired'})
     }
   },
   methods: {

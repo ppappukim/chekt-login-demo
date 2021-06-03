@@ -206,7 +206,6 @@ const FirebasePlugin = {
     var isSignInWithEmailLink = function () {
       console.log('isSignInWithEmailLink start');
       // Confirm the link is a sign-in with email link.
-      console.log(actionCodeSettings.url);
       if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
         console.log('isSignInWithEmailLink success');
         // Additional state parameters can also be passed via URL.
@@ -221,7 +220,7 @@ const FirebasePlugin = {
           email = window.prompt('Please provide your email for confirmation');
         }
         // The client SDK will parse the code from the link for you.
-        firebase.auth().signInWithEmailLink(email, window.location.href)
+        return firebase.auth().signInWithEmailLink(email, window.location.href)
           .then((result) => {
             // Clear email from storage.
             window.localStorage.removeItem('emailForSignIn');
@@ -235,6 +234,7 @@ const FirebasePlugin = {
             // result.additionalUserInfo.isNewUser
           })
           .catch((error) => {
+            router.push({path:'/passwordless_expired'})
             console.log(error);
             // Some error occurred, you can inspect the code: error.code
             // Common errors could be invalid email and invalid or expired OTPs.
@@ -246,35 +246,6 @@ const FirebasePlugin = {
     //////////////////////////////////////////
     //////////////////////////////////////////
     //////////////////////////////////////////
-
-
-
-    // var actionCodeSettings2 = {
-    //   url: `https://chekt-login-demo.firebaseapp.com/passwordless`,
-    //   // iOS: {
-    //   //   bundleId: 'com.example.ios'
-    //   // },
-    //   // android: {
-    //   //   packageName: 'com.example.android',
-    //   //   installApp: true,
-    //   //   minimumVersion: '12'
-    //   // },
-    //   handleCodeInApp: true,
-    //   // When multiple custom dynamic link domains are defined, specify which
-    //   // one to use.
-    //   // dynamicLinkDomain: "example.page.link"
-    // };
-    // var sendEmailVerification = function () {
-    //   firebase.auth().currentUser.sendEmailVerification(actionCodeSettings2)
-    //   .then(function() {
-    //     console.log('Verification email sent.');
-    //     // Verification email sent.
-    //   })
-    //   .catch(function(error) {
-    //     console.log('Verification email error.' + error);
-    //     // Error occurred. Inspect error.code.
-    //   });
-    // }
 
 
 
