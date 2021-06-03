@@ -221,7 +221,7 @@ const FirebasePlugin = {
           email = window.prompt('Please provide your email for confirmation');
         }
         // The client SDK will parse the code from the link for you.
-        firebase.auth().signInWithEmailLink(email, actionCodeSettings.url)
+        firebase.auth().signInWithEmailLink(email, window.location.href)
           .then((result) => {
             // Clear email from storage.
             window.localStorage.removeItem('emailForSignIn');
