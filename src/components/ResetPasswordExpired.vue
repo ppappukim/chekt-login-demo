@@ -27,8 +27,7 @@ export default {
     }
   },
   mounted: function () {
-    if (!this.resetEmailVerifyStatus) return 
-    this.descMessage = this.resetEmailVerifyStatus.message
+    this.checkResetEmailVerifyStatus()
   },
   computed: {
     resetEmailVerifyStatus: function () {
@@ -37,16 +36,19 @@ export default {
   },
   watch: {
     resetEmailVerifyStatus: function () {
-      if (!this.resetEmailVerifyStatus) return
-      if (this.resetEmailVerifyStatus !== 'successful') {
-        if (!this.resetEmailVerifyStatus.message) return
-        this.descMessage = this.resetEmailVerifyStatus.message
-      }
+      this.checkResetEmailVerifyStatus()
     },
   },
   methods: {
     clickResetting: function () {
       this.$router.push({path:'/passwordless'})
+    },
+    checkResetEmailVerifyStatus: function () {
+      if (!this.resetEmailVerifyStatus) return
+      if (this.resetEmailVerifyStatus !== 'successful') {
+        if (!this.resetEmailVerifyStatus.message) return
+        this.descMessage = this.resetEmailVerifyStatus.message
+      }
     },
     wait: function (time) {
       return new Promise(resolve => {

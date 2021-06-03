@@ -27,8 +27,7 @@ export default {
     }
   },
   mounted: function () {
-    if (!this.resetEmailVerifyStatus) return 
-    this.descMessage = this.resetEmailVerifyStatus.message
+    this.checkPasswordlessConfirmStatus()
   },
   computed: {
     passwordlessConfirmStatus: function () {
@@ -37,16 +36,18 @@ export default {
   },
   watch: {
     passwordlessConfirmStatus: function () {
-      console.log(this.passwordlessConfirmStatus);
-      if (!this.passwordlessConfirmStatus) return
-      if (this.passwordlessConfirmStatus !== 'successful') {
-        if (this.passwordlessConfirmStatus.message) this.descMessage = this.passwordlessConfirmStatus.message
-      }
+      this.checkPasswordlessConfirmStatus()
     },
   },
   methods: {
     clickResetting: function () {
       this.$router.push({path:'/forgotpassword'})
+    },
+    checkPasswordlessConfirmStatus: function () {
+      if (!this.passwordlessConfirmStatus) return
+      if (this.passwordlessConfirmStatus !== 'successful') {
+        if (this.passwordlessConfirmStatus.message) this.descMessage = this.passwordlessConfirmStatus.message
+      }
     },
     wait: function (time) {
       return new Promise(resolve => {

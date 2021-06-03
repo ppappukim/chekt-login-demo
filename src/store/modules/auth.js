@@ -51,6 +51,7 @@ const mutations = {
   },
   [CHECK_PASSWORDLESS_CONFIRM_STATUS]: function (state, data) {
     console.log('CHECK_PASSWORDLESS_CONFIRM_STATUS');
+    console.log(data);
     state.passwordlessConfirmStatus = data
   },
 
