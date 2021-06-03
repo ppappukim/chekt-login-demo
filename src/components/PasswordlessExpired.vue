@@ -37,6 +37,7 @@ export default {
   },
   watch: {
     passwordlessConfirmStatus: function () {
+      console.log(this.passwordlessConfirmStatus);
       if (!this.passwordlessConfirmStatus) return
       if (this.passwordlessConfirmStatus !== 'successful') {
         if (this.passwordlessConfirmStatus.message) this.descMessage = this.passwordlessConfirmStatus.message
