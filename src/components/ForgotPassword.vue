@@ -94,9 +94,11 @@ export default {
     },
 
     sendResetPassword: async function (email) {
+      // return await this.$firebase.auth.sendEmailVerification()
+      this.isEmailSendFailed = false
       try {
         // CASE 1 - Log IN successful
-        await this.$firebase.auth.sendPasswordResetEmail({email})
+        await this.$firebase.auth.sendPasswordResetEmail(email)
         this.isSent = true
       } catch (err) {
         console.log(err);
@@ -120,6 +122,7 @@ export default {
     clickResend: async function (email) {
       this.isSent = false
       this.isEmailResending = true
+      this.isEmailSendFailed = false
       await this.wait(1000) // Too fast
 
       // RESET PASSWORD SEND ACTION

@@ -101,8 +101,8 @@ const FirebasePlugin = {
       auth: app.auth()
     }
 
-    var sendPasswordResetEmail = function ({email}) {
-      return firebase.auth().sendPasswordResetEmail(email).then(function() {
+    var sendPasswordResetEmail = function (email) {
+      return firebase.auth().sendPasswordResetEmail(email, resetEmailConfig).then(function() {
         // Email sent.
         console.log('Reset Email send success!')
       }).catch(function(error) {
@@ -169,7 +169,7 @@ const FirebasePlugin = {
     var actionCodeSettings = {
       // URL you want to redirect back to. The domain (www.example.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
-      url: `https://chekt-login-demo.firebaseapp.com/passwordless`,
+      url: `https://chekt-login-demo.firebaseapp.com`,
       // This must be true.
       handleCodeInApp: true,
       // iOS: {
@@ -224,6 +224,7 @@ const FirebasePlugin = {
             window.localStorage.removeItem('emailForSignIn');
             console.log('signInWithEmailLink success!');
             alert('login success!')
+            console.log(result);
             // You can access the new user via result.user
             // Additional user info profile not available via:
             // result.additionalUserInfo.profile == null
@@ -242,7 +243,38 @@ const FirebasePlugin = {
     //////////////////////////////////////////
     //////////////////////////////////////////
     //////////////////////////////////////////
-    
+
+
+
+    // var actionCodeSettings2 = {
+    //   url: `https://chekt-login-demo.firebaseapp.com/passwordless`,
+    //   // iOS: {
+    //   //   bundleId: 'com.example.ios'
+    //   // },
+    //   // android: {
+    //   //   packageName: 'com.example.android',
+    //   //   installApp: true,
+    //   //   minimumVersion: '12'
+    //   // },
+    //   handleCodeInApp: true,
+    //   // When multiple custom dynamic link domains are defined, specify which
+    //   // one to use.
+    //   // dynamicLinkDomain: "example.page.link"
+    // };
+    // var sendEmailVerification = function () {
+    //   firebase.auth().currentUser.sendEmailVerification(actionCodeSettings2)
+    //   .then(function() {
+    //     console.log('Verification email sent.');
+    //     // Verification email sent.
+    //   })
+    //   .catch(function(error) {
+    //     console.log('Verification email error.' + error);
+    //     // Error occurred. Inspect error.code.
+    //   });
+    // }
+
+
+
     let fb = {
       firebase,
       auth: {
@@ -255,7 +287,7 @@ const FirebasePlugin = {
         handleResetPassword,
         verifyPasswordResetCode,
         sendSignInLinkToEmail,
-        isSignInWithEmailLink,
+        isSignInWithEmailLink,        
         getUser: function () {
           return firebase.auth().currentUser
         },
