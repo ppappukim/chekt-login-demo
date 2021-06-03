@@ -169,7 +169,7 @@ const FirebasePlugin = {
     var actionCodeSettings = {
       // URL you want to redirect back to. The domain (www.example.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
-      url: `https://chekt-login-demo.firebaseapp.com`,
+      url: `https://chekt-login-demo.firebaseapp.com/login`,
       // This must be true.
       handleCodeInApp: true,
       // iOS: {
@@ -204,8 +204,10 @@ const FirebasePlugin = {
     }
 
     var isSignInWithEmailLink = function () {
+      console.log('isSignInWithEmailLink start');
       // Confirm the link is a sign-in with email link.
       if (firebase.auth().isSignInWithEmailLink(actionCodeSettings.url)) {
+        console.log('isSignInWithEmailLink success');
         // Additional state parameters can also be passed via URL.
         // This can be used to continue the user's intended action before triggering
         // the sign-in operation.
