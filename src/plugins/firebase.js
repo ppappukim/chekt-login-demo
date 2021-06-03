@@ -93,7 +93,7 @@ const FirebasePlugin = {
       // Get the one-time code from the query parameter.
       actionCode: null, //'j8l-NDnwfSN0BjKn-ZKXBoPjw_GwmWRcrcRi9ZlTztgAAAF5xxyVhQ',
       // (Optional) Get the continue URL from the query parameter if available.
-      continueUrl: `https://chekt-login-demo.firebaseapp.com/resetpassword`,
+      continueUrl: `https://chekt-login-demo.firebaseapp.com`,
       // (Optional) Get the language code if available.
       lang: null,
       // Configure the Firebase SDK.
@@ -102,12 +102,12 @@ const FirebasePlugin = {
     }
 
     var sendPasswordResetEmail = function (email) {
-      return firebase.auth().sendPasswordResetEmail(email, resetEmailConfig).then(function() {
+      return firebase.auth().sendPasswordResetEmail(email).then(function() {
         // Email sent.
         console.log('Reset Email send success!')
       }).catch(function(error) {
         // An error happened.
-        alert(error);
+        console.log(error)
       });
     }
 
@@ -124,7 +124,7 @@ const FirebasePlugin = {
     var verifyPasswordResetCode = function () {
       // Verify the password reset code is valid.
       console.log('verifyPasswordResetCode start');
-      resetEmailConfig.auth.verifyPasswordResetCode(resetEmailConfig.actionCode).then((email) => {
+      resetEmailConfig.auth.verifyPasswordResetCode(resetEmailConfig).then((email) => {
         console.log('verifyPasswordResetCode success');
         store.commit('CHECK_RESET_EMAIL_VERIFY_STATUS', 'successful')
       }).catch((error) => {
@@ -222,10 +222,12 @@ const FirebasePlugin = {
         // The client SDK will parse the code from the link for you.
         return firebase.auth().signInWithEmailLink(email, window.location.href)
           .then((result) => {
-            // Clear email from storage.
+            // successful 전달.
             store.commit('CHECK_PASSWORDLESS_CONFIRM_STATUS', 'successful')
-            window.localStorage.removeItem('emailForSignIn');
+            // Clear email from storage.
+            window.localStorage.removeItem('emailForSignIn')
             console.log('signInWithEmailLink success!');
+            // successful 알려주기.(test용)
             alert('login success!')
             console.log(result);
             // You can access the new user via result.user
@@ -235,9 +237,10 @@ const FirebasePlugin = {
             // result.additionalUserInfo.isNewUser
           })
           .catch((error) => {
+            // error메세지 전달.
             store.commit('CHECK_PASSWORDLESS_CONFIRM_STATUS', error)
+            // 에러발생시 passwordlessExpired 페이지 표시.
             router.push({path:'/passwordless_expired'})
-            console.log(error);
             // Some error occurred, you can inspect the code: error.code
             // Common errors could be invalid email and invalid or expired OTPs.
           });

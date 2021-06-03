@@ -2,12 +2,12 @@
   <div class="body">
     <div class="form">
       <div class="form-header">
-        <div class="title">This password reset link is invalid.</div>
+        <div class="title">This passwordless link is invalid.</div>
         <div class="desc">
           {{descMessage}}
         </div>
         <div v-on:click="clickResetting()" class="action">
-          Try resetting your password again.
+          Try resetting your passwordless link again.
         </div>
       </div>
     </div>
@@ -23,7 +23,7 @@ export default {
   name: 'resetpassword',
   data () {
     return {
-      descMessage: 'Currently, the link is not available. Please resetting your password again.',
+      descMessage: 'Currently, the link is not available. Please resetting your passwordless link again.',
     }
   },
   mounted: function () {
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     clickResetting: function () {
-      this.$router.push({path:'/forgotpassword'})
+      this.$router.push({path:'/passwordless'})
     },
     checkPasswordlessConfirmStatus: function () {
       if (!this.passwordlessConfirmStatus) return

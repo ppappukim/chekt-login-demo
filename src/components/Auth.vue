@@ -40,12 +40,12 @@ export default {
   },
   created: async function () {
     try {
+      // passwordless 이메일을 클릭후 페이지가 열릴때 passwordless 로그인 시도.
       await this.$firebase.auth.isSignInWithEmailLink()
     } catch (err) {
-      console.log('isSignInWithEmailLink');
-      console.log(err);
+      // 에러발생시 passwordlessExpired 페이지 표시.
       this.$router.push({path:'/passwordlessExpired'})
-    }
+    } 
   },
   methods: {
   }
