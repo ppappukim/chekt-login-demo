@@ -31,13 +31,16 @@ export default {
     this.descMessage = this.resetEmailVerifyStatus.message
   },
   computed: {
-    resetEmailVerifyStatus: function () {
-      return this.$store.getters.resetEmailVerifyStatus
+    passwordlessConfirmStatus: function () {
+      return this.$store.getters.passwordlessConfirmStatus
     },
   },
   watch: {
-    resetEmailVerifyStatus: function () {
-      if (this.resetEmailVerifyStatus !== 'successful') this.descMessage = this.resetEmailVerifyStatus.message
+    passwordlessConfirmStatus: function () {
+      if (!this.passwordlessConfirmStatus) return
+      if (this.passwordlessConfirmStatus !== 'successful') {
+        if (this.passwordlessConfirmStatus.message) this.descMessage = this.passwordlessConfirmStatus.message
+      }
     },
   },
   methods: {

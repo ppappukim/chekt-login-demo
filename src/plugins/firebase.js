@@ -223,6 +223,7 @@ const FirebasePlugin = {
         return firebase.auth().signInWithEmailLink(email, window.location.href)
           .then((result) => {
             // Clear email from storage.
+            store.commit('CHECK_PASSWORDLESS_CONFIRM_STATUS', 'successful')
             window.localStorage.removeItem('emailForSignIn');
             console.log('signInWithEmailLink success!');
             alert('login success!')
@@ -234,6 +235,7 @@ const FirebasePlugin = {
             // result.additionalUserInfo.isNewUser
           })
           .catch((error) => {
+            store.commit('CHECK_PASSWORDLESS_CONFIRM_STATUS', error)
             router.push({path:'/passwordless_expired'})
             console.log(error);
             // Some error occurred, you can inspect the code: error.code

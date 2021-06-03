@@ -2,12 +2,12 @@
   <div class="body">
     <div class="form">
       <div class="form-header">
-        <div class="title">This password reset link is invalid.</div>
+        <div class="title">This passwordless link is invalid.</div>
         <div class="desc">
           {{descMessage}}
         </div>
         <div v-on:click="clickResetting()" class="action">
-          Try resetting your password again.
+          Try resetting your passwordless link again.
         </div>
       </div>
     </div>
@@ -37,12 +37,16 @@ export default {
   },
   watch: {
     resetEmailVerifyStatus: function () {
-      if (this.resetEmailVerifyStatus !== 'successful') this.descMessage = this.resetEmailVerifyStatus.message
+      if (!this.resetEmailVerifyStatus) return
+      if (this.resetEmailVerifyStatus !== 'successful') {
+        if (!this.resetEmailVerifyStatus.message) return
+        this.descMessage = this.resetEmailVerifyStatus.message
+      }
     },
   },
   methods: {
     clickResetting: function () {
-      this.$router.push({path:'/forgotpassword'})
+      this.$router.push({path:'/passwordless'})
     },
     wait: function (time) {
       return new Promise(resolve => {
