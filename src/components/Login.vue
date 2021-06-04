@@ -85,39 +85,11 @@ export default {
         alert('login Success!!')
       } catch (err) {
         console.log(err);
-        switch (err.code) {
-          case 'auth/invalid-email':
-            this.isLoginFailed = true
-            this.loginFailMessage = err.message
-            break;
-          case 'auth/wrong-password':
-            this.isLoginFailed = true
-            this.loginFailMessage = err.message
-            break;
-          case 'auth/user-not-found':
-            this.isLoginFailed = true
-            this.loginFailMessage = err.message
-            break;
-          case 'auth/too-many-requests':
-            this.isLoginFailed = true
-            this.loginFailMessage = err.message
-            break;
-          case 'auth/argument-error':
-            this.isLoginFailed = true
-            this.loginFailMessage = err.message
-            break;
-          case 'auth/user-not-found':
-            this.isLoginFailed = true
-            this.loginFailMessage = err.message
-            break;
-          // default: this.showCheckModal = true
-        }
+        this.loginFailMessage = err.message
       }
       this.isLoading = false
       passwordDom.disabled = false
       emailDom.disabled = false
-      // if (this.email === 'test@chekt.com' && this.password === 'test123') alert('login success!')
-      // else this.isLoginFailed = true
     },
     clickForgotPassword: function () {
       this.$router.push({path: '/forgotpassword'})
