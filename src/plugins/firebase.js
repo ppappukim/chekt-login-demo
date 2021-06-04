@@ -82,16 +82,16 @@ const FirebasePlugin = {
     }
 
     //////////////////////////////////////////////////////////
-    // RESET EMAIL PASSWORD //////////////////////////////////
+    // RESET EMAIL PASSWORD & PASSWORDLESS ///////////////////
     //////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////
 
     // INIT RESET EMAIL CONFIG
-    var resetEmailConfig = {
+    var actionCodeSetting = {
       // Get the action to complete.
       mode: null,
       // Get the one-time code from the query parameter.
-      actionCode: null, //'j8l-NDnwfSN0BjKn-ZKXBoPjw_GwmWRcrcRi9ZlTztgAAAF5xxyVhQ',
+      actionCode: null,
       // (Optional) Get the continue URL from the query parameter if available.
       continueUrl: null,
       // (Optional) Get the language code if available.
@@ -107,25 +107,36 @@ const FirebasePlugin = {
     
     // 1. SET - Reset Password를 하기위한 actionCode를 URL에서 뽑아온다.
     var getResetEmailActionCode = function () {
-      // URL 로드되면 URL에서 actionCode 뽑아오기.
+      // URL 로드되면...
       document.addEventListener('DOMContentLoaded', () => {
-        resetEmailConfig.actionCode = Vue.tool.getParameterByName('oobCode')
-        resetEmailConfig.mode = Vue.tool.getParameterByName('mode')
-        console.log(resetEmailConfig.actionCode);
-        console.log(resetEmailConfig.mode);
-        if (!resetEmailConfig.actionCode) return
 
-        if (resetEmailConfig.mode === 'resetPassword' ) store.commit('GET_RESET_EMAIL_ACTION_CODE_STATUS', 'successful')
-        else if (resetEmailConfig.mode === 'signIn' ) isSignInWithEmailLink()
+        // URL에서 정보 뽑아넣기
+        actionCodeSetting.actionCode = Vue.tool.getParameterByName('oobCode')
+        actionCodeSetting.mode = Vue.tool.getParameterByName('mode')
+
+        // URL에 actionCode가 없으면 무시.
+        if (!actionCodeSetting.actionCode) return
+
+        // CASE 1 - Reset Password
+        if (actionCodeSetting.mode === 'resetPassword' ) store.commit('GET_RESET_EMAIL_ACTION_CODE_STATUS', 'successful')
+        // CASE 2 - Passwordless
+        else if (actionCodeSetting.mode === 'signIn' ) isSignInWithEmailLink()
+        // CASE 3 - Others
         else return
       }, false);
     }
 
-    // 2. SET - actionCode가 유효한 actionCode인지 검사한다.
+
+    //////////////////////////////////////////////////////////
+    // RESET EMAIL PASSWORD //////////////////////////////////
+    //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+
+    // 1. SET - actionCode가 유효한 actionCode인지 검사한다.
     var verifyPasswordResetCode = function () {
       // Verify the password reset code is valid.
       console.log('verifyPasswordResetCode start');
-      resetEmailConfig.auth.verifyPasswordResetCode(resetEmailConfig.actionCode).then((email) => {
+      actionCodeSetting.auth.verifyPasswordResetCode(actionCodeSetting.actionCode).then((email) => {
         console.log('verifyPasswordResetCode success');
         //store
         store.commit('CHECK_RESET_EMAIL_VERIFY_STATUS', 'successful')
@@ -137,7 +148,7 @@ const FirebasePlugin = {
       })
     }
 
-    // 3. ACTION - actionCode가 유효하면 패스워드 reset을 진행한다.
+    // 2. ACTION - actionCode가 유효하면 패스워드 reset을 진행한다.
     var handleResetPassword = function (password) {
 
         // TODO: Show the reset screen with the user's email and ask the user for
@@ -145,7 +156,7 @@ const FirebasePlugin = {
         var newPassword = password
 
         // Save the new password.
-        return resetEmailConfig.auth.confirmPasswordReset(resetEmailConfig.actionCode, newPassword).then((resp) => {
+        return actionCodeSetting.auth.confirmPasswordReset(actionCodeSetting.actionCode, newPassword).then((resp) => {
           // Password reset has been confirmed and new password updated.
           console.log('confirmPasswordReset sucessful');
           store.commit('CHECK_RESET_EMAIL_CONFIRM_STATUS', 'sucessful')
@@ -171,10 +182,11 @@ const FirebasePlugin = {
     //////////////////////////////////////////////////
     //////////////////////////////////////////////////
 
+    // 1. SET - Passwordless Config 준비.
     var passwordlessConfig = {
       // URL you want to redirect back to. The domain (www.example.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
-      url: `https://chekt-login-demo.firebaseapp.com/`,
+      // url: `https://chekt-login-demo.firebaseapp.com/`,
       // This must be true.
       handleCodeInApp: true,
       // iOS: {
@@ -188,26 +200,12 @@ const FirebasePlugin = {
       // dynamicLinkDomain: `https://chekt-login-demo.firebaseapp.com/passwordless`
     }
 
+    // 2. ACTION - Passwordless Link Email 보내기.
     var sendSignInLinkToEmail = function (email) {
-
-      // Save the new password.
       return firebase.auth().sendSignInLinkToEmail(email, passwordlessConfig)
-      // .then(() => {
-      //   console.log('sendSignInLinkToEmail success!');
-      //   // The link was successfully sent. Inform the user.
-      //   // Save the email locally so you don't need to ask the user for it again
-      //   // if they open the link on the same device.
-      //   window.localStorage.setItem('emailForSignIn', email);
-      //   // ...
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      //   var errorCode = error.code;
-      //   var errorMessage = error.message;
-      //   // ...
-      // });
     }
 
+    // 3. ACTION - 링크 클릭시 로그인 실행.
     var isSignInWithEmailLink = function () {
       console.log('isSignInWithEmailLink start');
       // Confirm the link is a sign-in with email link.
