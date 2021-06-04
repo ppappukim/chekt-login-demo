@@ -20,12 +20,13 @@ export default {
       if (this.getResetEmailActionCodeStatus === 'successful') this.$firebase.auth.verifyPasswordResetCode()
     }
   },
-  created: function () {
-  },
-  mounted: function () {
+  created: async function () {
     this.$nextTick(() => {
+      await this.$tool.wait(1000)
       this.$firebase.auth.getResetEmailActionCode()
     })
+  },
+  mounted: function () {
   },
   beforeDestroy: function () {
   },
