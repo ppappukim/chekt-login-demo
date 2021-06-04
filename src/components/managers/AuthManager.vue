@@ -22,7 +22,7 @@ export default {
   },
   created: async function () {
     this.$nextTick(() => {
-      await this.$tool.wait(1000)
+      await this.$tool.wait(5000)
       this.$firebase.auth.getResetEmailActionCode()
     })
   },
