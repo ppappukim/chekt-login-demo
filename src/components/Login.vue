@@ -85,6 +85,7 @@ export default {
         alert('login Success!!')
       } catch (err) {
         console.log(err);
+        this.isLoginFailed = true
         this.loginFailMessage = err.message
       }
       this.isLoading = false
