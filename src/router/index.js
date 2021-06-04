@@ -6,7 +6,7 @@ import Login from '@/components/Login'
 // Reset Password
 import ResetPassword from '@/components/resetpassword/ResetPassword'
 import ForgotPassword from '@/components/resetpassword/ForgotPassword'
-import ResetPasswordExpired from '@/components/passwordless/ResetPasswordExpired'
+import ResetPasswordExpired from '@/components/resetpassword/ResetPasswordExpired'
 
 // Passwordless
 import PasswordlessExpired from '@/components/passwordless/PasswordlessExpired'

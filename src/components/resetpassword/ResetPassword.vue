@@ -100,11 +100,9 @@
 
 <script>
 import MyIcon from '@/components/MyIcon'
-import ResetPasswordExpired from '@/components/resetpassword/ResetPasswordExpired'
 export default {
   components: {
     MyIcon,
-    ResetPasswordExpired
   },
   name: 'resetpassword',
   data () {
@@ -142,9 +140,7 @@ export default {
     resetEmailVerifyStatus: function () {
       if (!this.resetEmailVerifyStatus) return
       if (this.resetEmailVerifyStatus !== 'successful') {
-        // this.$nextTick(() => {
-          this.$router.push({path:'/resetpassword_expired'}
-        // })
+        this.$router.push({path:'/resetpassword_expired'})
       }
     },
     password: function () {
