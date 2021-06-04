@@ -21,7 +21,7 @@ export default {
     }
   },
   created: async function () {
-    this.$nextTick(() => {
+    this.$nextTick(async() => {
       await this.$tool.wait(5000)
       this.$firebase.auth.getResetEmailActionCode()
     })
