@@ -23,7 +23,9 @@ export default {
   created: function () {
   },
   mounted: function () {
-    this.$firebase.auth.getResetEmailActionCode()
+    this.$nextTick(() => {
+      this.$firebase.auth.getResetEmailActionCode()
+    })
   },
   beforeDestroy: function () {
   },
