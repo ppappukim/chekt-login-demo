@@ -25,7 +25,6 @@ const actions = {
 const mutations = {
   [GET_EMAIL_INPUT_INFO]: function (state, email) {
     state.email = email
-    console.log('bobby!', email);
   },
 }
 
