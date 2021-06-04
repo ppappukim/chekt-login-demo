@@ -137,7 +137,6 @@ export default {
         this.isSend = true
         this.codeInputFocus()
       } catch (err) {
-        console.log(err);
         this.isEmailSendFailed = true
         this.emailSendFailedMessage = err.message
       }
