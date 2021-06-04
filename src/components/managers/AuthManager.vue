@@ -17,10 +17,14 @@ export default {
   watch: {
     getResetEmailActionCodeStatus: function () {
       console.log(this.getResetEmailActionCodeStatus);
-      if (this.getResetEmailActionCodeStatus === 'successful') this.$firebase.auth.verifyPasswordResetCode()
+      if (this.getResetEmailActionCodeStatus === 'successful') {
+        // 유효한 action code인지 확인한다.
+        this.$firebase.auth.verifyPasswordResetCode()
+      } 
     }
   },
   created: async function () {
+    // Reset passwrod action code 가져오기.
     this.$firebase.auth.getResetEmailActionCode()
   },
   mounted: function () {

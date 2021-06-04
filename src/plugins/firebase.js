@@ -110,8 +110,10 @@ const FirebasePlugin = {
       // URL 로드되면 URL에서 actionCode 뽑아오기.
       document.addEventListener('DOMContentLoaded', () => {
         resetEmailConfig.actionCode = Vue.tool.getParameterByName('oobCode')
+        resetEmailConfig.mode = Vue.tool.getParameterByName('resetPassword')
         console.log(resetEmailConfig.actionCode);
         if (!resetEmailConfig.actionCode) return
+        if (!resetEmailConfig.mode) return
         // store
         store.commit('GET_RESET_EMAIL_ACTION_CODE_STATUS', 'successful')
       }, false);
