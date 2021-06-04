@@ -49,11 +49,6 @@ export default {
         if (this.passwordlessConfirmStatus.message) this.descMessage = this.passwordlessConfirmStatus.message
       }
     },
-    wait: function (time) {
-      return new Promise(resolve => {
-        setTimeout(() => { resolve() }, time)
-      })
-    },
   }
 }
 </script>

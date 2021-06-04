@@ -75,7 +75,7 @@ export default {
       emailDom.disabled = true
       this.isLoginFailed = false
       this.isLoading = true
-      await this.wait(500) // Too fast
+      await this.$tool.wait(500) // Too fast
       
       ////////////////////
       // LOGIN ACTION!!!!
@@ -125,12 +125,6 @@ export default {
     clickPasswordless: function () {
       this.$router.push({path: '/passwordless'})
     },
-    wait: function (time) {
-      return new Promise(resolve => {
-        setTimeout(() => { resolve() }, time)
-      })
-    },
-    
   }
 }
 </script>

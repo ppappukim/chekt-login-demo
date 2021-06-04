@@ -124,10 +124,10 @@ export default {
       var emailDom = document.getElementById("forgotpassword-email")
       emailDom.blur()
       emailDom.disabled = true
-      await this.wait(1000) // Too fast!
+      await this.$tool.wait(1000) // Too fast!
 
-      ///////////////////
-      // SEND LINK ACTION
+      ////////////////////////////////
+      // SEND PASSWORDLESS LINK ACTION
       try {
         await this.$firebase.auth.sendSignInLinkToEmail(this.email)
         this.isSend = true
@@ -142,7 +142,7 @@ export default {
     clickSubmit: async function () {
       this.isCodeAuthFailed = false
       this.isLoading = true
-      await this.wait(2000)
+      await this.$tool.wait(2000)
       if (this.code === '123456') {
         alert('success!')
       }
@@ -159,7 +159,7 @@ export default {
     clickResend: async function () {
       this.isEmailResending = true
       this.isSend = false
-      await this.wait(2000)
+      await this.$tool.wait(2000)
       this.isEmailResending = false
       this.isCodeAuthFailed = false
       this.isCodeInsertDone = false
@@ -177,24 +177,19 @@ export default {
     },
     emailFocusInput: function () {
       this.email = this.emailInputInfo
-      var email = document.getElementById("forgotpassword-email")
-      if (email !== null)
-      email.focus()
+      var emailDom = document.getElementById("forgotpassword-email")
+      if (emailDom !== null)
+      emailDom.focus()
     },
     codeBlur: function () {
       this.codeInputActive = false
     },
     clickActive: function () {
-      var code = document.getElementById("passwordless-code")
-      code.focus()
+      var codeDom = document.getElementById("passwordless-code")
+      codeDom.focus()
       this.codeInputActive = true
-      code.setSelectionRange(6,6) // 무조건 커서 끝에 가기하기.
+      codeDom.setSelectionRange(6,6) // 무조건 커서 끝에 가기하기.
 
-    },
-    wait: function (time) {
-      return new Promise(resolve => {
-        setTimeout(() => { resolve() }, time)
-      })
     },
   }
 }

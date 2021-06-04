@@ -82,7 +82,7 @@ export default {
       var emailDom = document.getElementById("forgotpassword-email")
       emailDom.blur()
       emailDom.disabled = true
-      await this.wait(1000) // Too fast
+      await this.$tool.wait(1000) // Too fast
 
       // RESET PASSWORD SEND ACTION
       /////////////////////////////
@@ -113,7 +113,7 @@ export default {
       this.isSent = false
       this.isEmailResending = true
       this.isEmailSendFailed = false
-      await this.wait(1000) // Too fast
+      await this.$tool.wait(1000) // Too fast
 
       // RESET PASSWORD SEND ACTION
       /////////////////////////////
@@ -127,11 +127,6 @@ export default {
       var email = document.getElementById("forgotpassword-email")
       if (email !== null)
       email.focus()
-    },
-    wait: function (time) {
-      return new Promise(resolve => {
-        setTimeout(() => { resolve() }, time)
-      })
     },
   }
 }

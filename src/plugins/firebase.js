@@ -105,6 +105,7 @@ const FirebasePlugin = {
       return firebase.auth().sendPasswordResetEmail(email)//.then(function() {
     }
     
+    // 1. SET - Reset Password를 하기위한 actionCode를 URL에서 뽑아온다.
     var getResetEmailActionCode = function () {
       // URL 로드되면 URL에서 actionCode 뽑아오기.
       document.addEventListener('DOMContentLoaded', () => {
@@ -116,6 +117,7 @@ const FirebasePlugin = {
       }, false);
     }
 
+    // 2. SET - actionCode가 유효한 actionCode인지 검사한다.
     var verifyPasswordResetCode = function () {
       // Verify the password reset code is valid.
       console.log('verifyPasswordResetCode start');
@@ -131,6 +133,7 @@ const FirebasePlugin = {
       })
     }
 
+    // 3. ACTION - actionCode가 유효하면 패스워드 reset을 진행한다.
     var handleResetPassword = function (password) {
 
         // TODO: Show the reset screen with the user's email and ask the user for

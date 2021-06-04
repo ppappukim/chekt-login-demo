@@ -50,11 +50,6 @@ export default {
         this.descMessage = this.resetEmailVerifyStatus.message
       }
     },
-    wait: function (time) {
-      return new Promise(resolve => {
-        setTimeout(() => { resolve() }, time)
-      })
-    },
   }
 }
 </script>

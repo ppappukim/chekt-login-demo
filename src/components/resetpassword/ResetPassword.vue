@@ -1,11 +1,9 @@
 <template>
 
   <div class="body">
-    <!-- 1. reset password expired page -->
-    <ResetPasswordExpired v-if="isExpired"/>
 
-    <!-- 2. go to dashboard page -->
-    <div v-else-if="isResetPasswordSuccess" class="form">
+    <!-- 1. go to dashboard page -->
+    <div v-if="isResetPasswordSuccess" class="form">
       <div>
         <div class="title">You've successfully changed your password</div>
         <div class="desc">Click the “Continue to dashboard” button to log in your site.</div>
@@ -16,7 +14,7 @@
       </div>
     </div>
 
-    <!-- 3. reset password page -->
+    <!-- 2. reset password page -->
     <div v-else class="form">
       <div>
         <div class="title">Reset your password</div>
@@ -111,7 +109,6 @@ export default {
   name: 'resetpassword',
   data () {
     return {
-      isExpired: false,
       password: '',
       passwordConfirm: '',
       isLoading: false,
@@ -144,13 +141,8 @@ export default {
   watch: {
     resetEmailVerifyStatus: function () {
       console.log(this.resetEmailVerifyStatus);
-      if (this.resetEmailVerifyStatus !== 'successful') this.isExpired = true
+      if (this.resetEmailVerifyStatus !== 'successful') this.$route.push({path:'resetpassword_expired'})
     },
-    // resetEmailConfirmStatus: function () {
-    //   console.log(this.resetEmailConfirmStatus.message);
-    //   if (this.resetEmailConfirmStatus !== 'successful') this.isExpired = true
-    // },
-
     password: function () {
       this.passwordSecureCheck()
       this.passwordConfirmSecureCheck()
@@ -187,17 +179,17 @@ export default {
       passwordDom.blur()
       this.isPasswordDisabled = true
       passwordConfirmDom.blur()
-      await this.wait(1000) // Too fast
+      await this.$tool.wait(1000) // Too fast
 
-      ////////////////////
-      // LOGIN ACTION!!!!
+      ////////////////////////
+      // RESET PASSOWRD ACTION
       try {
         await this.$firebase.auth.handleResetPassword(this.password)
         console.log('successful');
         this.isResetPasswordSuccess = true
       } catch (err) {
         console.log(err);
-        isExpired = true
+        this.$route.push({path:'resetpassword_expired'})
       }
       this.isPasswordDisabled = false
       this.isLoading = false
@@ -318,17 +310,12 @@ export default {
     },
     clickToDashboard: async function () {
       this.isLoading = true
-      await this.wait(1000)
+      await this.$tool.wait(1000)
       this.isLoading = false
       alert('Go to dashboard!')
     },
     test: function () {
-      this.isExpired = true
-    },
-    wait: function (time) {
-      return new Promise(resolve => {
-        setTimeout(() => { resolve() }, time)
-      })
+      this.$route.push({path:'resetpassword_expired'})
     },
   }
 }
