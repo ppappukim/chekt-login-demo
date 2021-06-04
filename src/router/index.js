@@ -2,10 +2,15 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Auth from '@/components/Auth'
 import Login from '@/components/Login'
+
+// Reset Password
 import ResetPassword from '@/components/resetpassword/ResetPassword'
 import ForgotPassword from '@/components/resetpassword/ForgotPassword'
-import Passwordless from '@/components/passwordless/Passwordless'
+import ResetPasswordExpired from '@/components/passwordless/ResetPasswordExpired'
+
+// Passwordless
 import PasswordlessExpired from '@/components/passwordless/PasswordlessExpired'
+import Passwordless from '@/components/passwordless/Passwordless'
 
 Vue.use(Router)
 
@@ -34,7 +39,7 @@ export default new Router({
         },
         {
           path: '/resetpassword_expired',
-          component: PasswordlessExpired
+          component: ResetPasswordExpired
         },
         {
           path: '/passwordless',

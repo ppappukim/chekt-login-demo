@@ -141,7 +141,7 @@ const FirebasePlugin = {
         var newPassword = password
 
         // Save the new password.
-        resetEmailConfig.auth.confirmPasswordReset(resetEmailConfig.actionCode, newPassword).then((resp) => {
+        return resetEmailConfig.auth.confirmPasswordReset(resetEmailConfig.actionCode, newPassword).then((resp) => {
           // Password reset has been confirmed and new password updated.
           console.log('confirmPasswordReset sucessful');
           store.commit('CHECK_RESET_EMAIL_CONFIRM_STATUS', 'sucessful')

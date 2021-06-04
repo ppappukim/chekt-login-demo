@@ -140,8 +140,12 @@ export default {
   },
   watch: {
     resetEmailVerifyStatus: function () {
-      console.log(this.resetEmailVerifyStatus);
-      if (this.resetEmailVerifyStatus !== 'successful') this.$router.push({path:'/resetpassword_expired'})
+      if (!this.resetEmailVerifyStatus) return
+      if (this.resetEmailVerifyStatus !== 'successful') {
+        // this.$nextTick(() => {
+          this.$router.push({path:'/resetpassword_expired'})
+        // })
+      }
     },
     password: function () {
       this.passwordSecureCheck()
