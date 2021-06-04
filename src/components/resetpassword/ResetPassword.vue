@@ -143,7 +143,7 @@ export default {
       if (!this.resetEmailVerifyStatus) return
       if (this.resetEmailVerifyStatus !== 'successful') {
         // this.$nextTick(() => {
-          this.$router.push({path:'/resetpassword_expired'})
+          this.$router.push({path:'/resetpassword_expired'}
         // })
       }
     },
