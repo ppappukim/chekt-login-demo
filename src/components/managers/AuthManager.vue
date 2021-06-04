@@ -21,12 +21,9 @@ export default {
     }
   },
   created: async function () {
-    this.$nextTick(async() => {
-      await this.$tool.wait(5000)
-      this.$firebase.auth.getResetEmailActionCode()
-    })
   },
   mounted: function () {
+    this.$firebase.auth.getResetEmailActionCode()
   },
   beforeDestroy: function () {
   },
