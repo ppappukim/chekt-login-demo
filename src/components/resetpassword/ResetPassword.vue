@@ -141,7 +141,7 @@ export default {
   watch: {
     resetEmailVerifyStatus: function () {
       console.log(this.resetEmailVerifyStatus);
-      if (this.resetEmailVerifyStatus !== 'successful') this.$route.push({path:'resetpassword_expired'})
+      if (this.resetEmailVerifyStatus !== 'successful') this.$router.push({path:'/resetpassword_expired'})
     },
     password: function () {
       this.passwordSecureCheck()
@@ -189,7 +189,7 @@ export default {
         this.isResetPasswordSuccess = true
       } catch (err) {
         console.log(err);
-        this.$route.push({path:'resetpassword_expired'})
+        this.$router.push({path:'/resetpassword_expired'})
       }
       this.isPasswordDisabled = false
       this.isLoading = false
@@ -315,7 +315,7 @@ export default {
       alert('Go to dashboard!')
     },
     test: function () {
-      this.$route.push({path:'resetpassword_expired'})
+      this.$router.push({path:'/resetpassword_expired'})
     },
   }
 }
