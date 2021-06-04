@@ -4,6 +4,7 @@ import {
   CHECK_RESET_EMAIL_VERIFY_STATUS,
   CHECK_RESET_EMAIL_CONFIRM_STATUS,
   CHECK_PASSWORDLESS_CONFIRM_STATUS,
+  GET_RESET_EMAIL_ACTION_CODE_STATUS
 } from '@/store/mutation-types'
 
 let initialState = {
@@ -11,6 +12,7 @@ let initialState = {
   resetEmailVerifyStatus: null,
   resetEmailConfirmStatus: null,
   passwordlessConfirmStatus: null,
+  getResetEmailActionCodeStatus: null,
 }
 
 // initial state
@@ -29,6 +31,9 @@ const getters = {
   },
   passwordlessConfirmStatus: function (state) {
     return state.passwordlessConfirmStatus
+  },
+  getResetEmailActionCodeStatus: function (state) {
+    return state.getResetEmailActionCodeStatus
   },
 }
 // actions
@@ -51,8 +56,11 @@ const mutations = {
   },
   [CHECK_PASSWORDLESS_CONFIRM_STATUS]: function (state, data) {
     console.log('CHECK_PASSWORDLESS_CONFIRM_STATUS');
-    console.log(data);
     state.passwordlessConfirmStatus = data
+  },
+  [GET_RESET_EMAIL_ACTION_CODE_STATUS]: function (state, data) {
+    console.log('GET_RESET_EMAIL_ACTION_CODE_STATUS');
+    state.getResetEmailActionCodeStatus = data
   },
 
 }

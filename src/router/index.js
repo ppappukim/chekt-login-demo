@@ -2,10 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Auth from '@/components/Auth'
 import Login from '@/components/Login'
-import ResetPassword from '@/components/ResetPassword'
-import ForgotPassword from '@/components/ForgotPassword'
-import Passwordless from '@/components/Passwordless'
-import PasswordlessExpired from '@/components/PasswordlessExpired'
+import ResetPassword from '@/components/resetpassword/ResetPassword'
+import ForgotPassword from '@/components/resetpassword/ForgotPassword'
+import Passwordless from '@/components/passwordless/Passwordless'
+import PasswordlessExpired from '@/components/passwordless/PasswordlessExpired'
 
 Vue.use(Router)
 

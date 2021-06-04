@@ -102,7 +102,7 @@
 
 <script>
 import MyIcon from '@/components/MyIcon'
-import ResetPasswordExpired from '@/components/ResetPasswordExpired'
+import ResetPasswordExpired from '@/components/resetpassword/ResetPasswordExpired'
 export default {
   components: {
     MyIcon,
@@ -161,7 +161,6 @@ export default {
     }
   },
   created: async function () {
-    await this.$firebase.auth.emailHandling()
   },
   mounted: function () {
   },
@@ -194,8 +193,10 @@ export default {
       // LOGIN ACTION!!!!
       try {
         await this.$firebase.auth.handleResetPassword(this.password)
+        console.log('successful');
         this.isResetPasswordSuccess = true
       } catch (err) {
+        console.log(err);
         isExpired = true
       }
       this.isPasswordDisabled = false

@@ -1,12 +1,17 @@
 <template>
   <div id="app">
+    <AuthManager/>
     <router-view/>
   </div>
 </template>
 
 <script>
+import AuthManager from '@/components/managers/AuthManager'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    AuthManager,
+  },
 }
 </script>
 

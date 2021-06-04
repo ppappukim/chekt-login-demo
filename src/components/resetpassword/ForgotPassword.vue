@@ -1,10 +1,10 @@
 <template>
   <div class="body" v-bind:class="{failed:isEmailSendFailed}">
 
-    <!-- 1. sent page -->
+    <!-- 1. sent success page -->
     <div v-if="isSent" class="form">
-      <div v-if="isEmailSendFailed" class="title">{{failedMessage}}</div>
-      <div v-else class="title">Thanks, check your email for instructions to reset your password</div>
+      <!-- <div v-if="isEmailSendFailed" class="title">{{failedMessage}}</div> -->
+      <div class="title">Thanks, check your email for instructions to reset your password</div>
       <div class="desc">
         Didn't get the email? Check your spam folder or <span v-on:click="clickResend(email)" class="resend">Resend</span>
       </div>
@@ -32,7 +32,7 @@
       </div>
       <div v-if="isEmailSendFailed" class="failed-text" style="margin-top:20px;">
           <MyIcon v-bind:icon="'error'" v-bind:width="18" />
-          <div style="margin-left:5px;">We couldn’t find that email. Please try again.</div>
+          <div style="margin-left:5px;">{{failedMessage}}</div>
         </div>
       <div v-on:click="clickSend(email)" class="send-btn" v-bind:class="{loading:isLoading}">
         <div v-if="isLoading" class="loader"></div>
@@ -61,7 +61,7 @@ export default {
       isForgotPasswordMode: false,
       isSent: false,
       isEmailResending: false,
-      failedMessage: '',
+      failedMessage: 'we cannot send the reset email. please try later.', // Default message.
     }
   },
   computed: {
@@ -94,27 +94,17 @@ export default {
     },
 
     sendResetPassword: async function (email) {
-      // return await this.$firebase.auth.sendEmailVerification()
       this.isEmailSendFailed = false
       try {
-        // CASE 1 - Log IN successful
+        // CASE 1 - Send reset password successful
         await this.$firebase.auth.sendPasswordResetEmail(email)
         this.isSent = true
       } catch (err) {
+        // CASE 2 - Send reset password error
         console.log(err);
         this.isEmailSendFailed = true
         this.failedMessage = err.message
-        // switch (err.code) {
-        //   case 'auth/argument-error':
-        //     this.isEmailSendFailed = true
-        //     break;
-        //   case 'auth/user-not-found':
-        //     this.isEmailSendFailed = true
-        //     break;
-        //   default: this.isEmailSendFailed = true
-        // }
       }
-      this.isSent = true
     },
     clickReturnToLogin: function () {
       this.$router.push({path: '/'})
