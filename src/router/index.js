@@ -34,7 +34,7 @@ export default new Router({
         },
         {
           path: '/resetpassword_expired',
-          component: ResetPassword
+          component: PasswordlessExpired
         },
         {
           path: '/passwordless',
