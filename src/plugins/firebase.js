@@ -126,6 +126,7 @@ const FirebasePlugin = {
 
     // 2. SET - actionCode가 유효한 actionCode인지 검사한다.
     var verifyPasswordResetCode = function () {
+      if (resetEmailConfig.mode !== 'resetPassword' ) return
       // Verify the password reset code is valid.
       console.log('verifyPasswordResetCode start');
       resetEmailConfig.auth.verifyPasswordResetCode(resetEmailConfig.actionCode).then((email) => {
