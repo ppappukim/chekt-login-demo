@@ -64,7 +64,7 @@
       </div>
       <div v-if="isEmailSendFailed" class="failed-text" style="margin-top:20px;">
           <MyIcon v-bind:icon="'error'" v-bind:width="18" />
-          <div style="margin-left:5px;">This account doesn't use paaswordless login.</div>
+          <div style="margin-left:5px;">{{emailSendFailedMessage}}</div>
       </div>
       <div v-on:click="clickSend()" class="send-btn" v-bind:class="{loading:isLoading}">
         <div v-if="isLoading" class="loader"></div>
@@ -90,7 +90,7 @@ export default {
       email: '',
       isLoading: false,
       isEmailSendFailed: false,
-      isForgotPasswordMode: false,
+      emailSendFailedMessage: false,
       isSend: false,
       isEmailResending: false,
       code: '',
@@ -135,6 +135,7 @@ export default {
       } catch (err) {
         console.log(err);
         this.isEmailSendFailed = true
+        this.emailSendFailedMessage = err.message
       }
       emailDom.disabled = false
       this.isLoading = false  

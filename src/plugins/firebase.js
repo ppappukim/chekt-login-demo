@@ -114,9 +114,9 @@ const FirebasePlugin = {
         console.log(resetEmailConfig.actionCode);
         console.log(resetEmailConfig.mode);
         if (!resetEmailConfig.actionCode) return
-        
+
         if (resetEmailConfig.mode === 'resetPassword' ) store.commit('GET_RESET_EMAIL_ACTION_CODE_STATUS', 'successful')
-        else if (resetEmailConfig.mode === 'signIn' ) sendSignInLinkToEmail()
+        else if (resetEmailConfig.mode === 'signIn' ) isSignInWithEmailLink()
         else return
 
         // store
