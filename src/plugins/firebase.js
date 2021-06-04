@@ -114,7 +114,11 @@ const FirebasePlugin = {
         console.log(resetEmailConfig.actionCode);
         console.log(resetEmailConfig.mode);
         if (!resetEmailConfig.actionCode) return
-        if (!resetEmailConfig.mode !== 'resetPassword' ) return
+        
+        if (resetEmailConfig.mode === 'resetPassword' ) store.commit('GET_RESET_EMAIL_ACTION_CODE_STATUS', 'successful')
+        else if (resetEmailConfig.mode === 'signIn' ) sendSignInLinkToEmail()
+        else return
+
         // store
         store.commit('GET_RESET_EMAIL_ACTION_CODE_STATUS', 'successful')
       }, false);
@@ -170,10 +174,10 @@ const FirebasePlugin = {
     //////////////////////////////////////////////////
     //////////////////////////////////////////////////
 
-    var actionCodeSettings = {
+    var passwordlessConfig = {
       // URL you want to redirect back to. The domain (www.example.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
-      url: `https://chekt-login-demo.firebaseapp.com/login`,
+      url: `https://chekt-login-demo.firebaseapp.com/`,
       // This must be true.
       handleCodeInApp: true,
       // iOS: {
@@ -190,21 +194,21 @@ const FirebasePlugin = {
     var sendSignInLinkToEmail = function (email) {
 
       // Save the new password.
-      firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
-      .then(() => {
-        console.log('sendSignInLinkToEmail success!');
-        // The link was successfully sent. Inform the user.
-        // Save the email locally so you don't need to ask the user for it again
-        // if they open the link on the same device.
-        window.localStorage.setItem('emailForSignIn', email);
-        // ...
-      })
-      .catch((error) => {
-        console.log(error);
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
-      });
+      return firebase.auth().sendSignInLinkToEmail(email, passwordlessConfig)
+      // .then(() => {
+      //   console.log('sendSignInLinkToEmail success!');
+      //   // The link was successfully sent. Inform the user.
+      //   // Save the email locally so you don't need to ask the user for it again
+      //   // if they open the link on the same device.
+      //   window.localStorage.setItem('emailForSignIn', email);
+      //   // ...
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      //   var errorCode = error.code;
+      //   var errorMessage = error.message;
+      //   // ...
+      // });
     }
 
     var isSignInWithEmailLink = function () {
