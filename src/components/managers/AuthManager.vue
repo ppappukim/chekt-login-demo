@@ -21,9 +21,9 @@ export default {
     }
   },
   created: async function () {
+    this.$firebase.auth.getResetEmailActionCode()
   },
   mounted: function () {
-    this.$firebase.auth.getResetEmailActionCode()
   },
   beforeDestroy: function () {
   },
