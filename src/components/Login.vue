@@ -64,6 +64,7 @@ export default {
     }
   },
   created: function () {
+    this.email = this.emailInputInfo
   },
   methods: {
     clickLogin: async function (email, password) {
